@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Smart Ruler</string>
+    <string name="image_ruler">Ruler Image</string>
 </resources>
