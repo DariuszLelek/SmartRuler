@@ -13,6 +13,7 @@ import com.darodev.smartruler.utility.OptionsProvider;
 public class RulerActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private OptionsProvider options;
+    private ImageView imageInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +24,20 @@ public class RulerActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(res.getString(R.string.app_name), Context.MODE_PRIVATE);
 
         options = new OptionsProvider(res, prefs);
+        imageInfo = (ImageView) findViewById(R.id.image_info);
 
         refreshImageUnitImage();
+        showInfoScreen();
+    }
+
+    private void showInfoScreen(){
+        if(!options.isCalibrated()){
+            imageInfo.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void clickInfo(View view){
+        imageInfo.setVisibility(View.INVISIBLE);
     }
 
     public void clickOptions(View view){

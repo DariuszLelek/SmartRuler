@@ -29,6 +29,10 @@ public class OptionsProvider {
         return preferences.getBoolean(getKey(R.string.unit_inch_mode_key), false);
     }
 
+    public boolean isCalibrated(){
+        return preferences.getBoolean(getKey(R.string.calibrated_key), false);
+    }
+
     public void swapInchMode(){
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(getKey(R.string.unit_inch_mode_key), !isInInchMode());

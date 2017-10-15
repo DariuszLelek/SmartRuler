@@ -102,22 +102,25 @@
 
         </LinearLayout>
 
-        <Space
+        <LinearLayout
+            android:id="@+id/layout_ad"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:gravity="bottom|center"
+            android:orientation="vertical">
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_ad"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:gravity="bottom|center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/image_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/color_semi_transparent"
+        android:onClick="clickInfo"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/image_info"/>
 
 </FrameLayout>
