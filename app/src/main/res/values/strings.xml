@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Smart Ruler</string>
     <string name="image_ruler">Ruler Image</string>
+    <string name="image_options">Options Image</string>
+    <string name="image_unit">Unit Image</string>
+    <string name="image_close">Close Image</string>
+    <string name="text_measure_result_holder">1 cm 2 mm</string>
 </resources>
