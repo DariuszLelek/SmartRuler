@@ -55,6 +55,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/image_close"
                     android:cropToPadding="false"
+                    android:onClick="clickExit"
                     android:padding="20dp"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/ic_close_black_400dp"/>
@@ -78,6 +79,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/image_unit"
                     android:cropToPadding="false"
+                    android:onClick="clickUnit"
                     android:padding="20dp"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/cm"/>
@@ -91,6 +93,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/image_options"
                     android:cropToPadding="false"
+                    android:onClick="clickOptions"
                     android:padding="20dp"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/ic_settings_black_400dp"/>
