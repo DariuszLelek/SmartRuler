@@ -12,30 +12,27 @@ import android.widget.TextView;
 import com.darodev.smartruler.utility.RulerData;
 
 public class RulerActivity extends AppCompatActivity {
-    private SharedPreferences.Editor editor;
     private RulerData rulerData;
     private ImageView imageInfo;
     private TextView[] textSavedData;
     private TextView textMeasureResult;
-
-    int saveTest = 1;
-
+    private Resources resources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruler);
 
-        Resources res = getResources();
-        SharedPreferences prefs = getSharedPreferences(res.getString(R.string.app_name), Context.MODE_PRIVATE);
+        resources = getResources();
+        SharedPreferences prefs = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE);
 
-        rulerData = new RulerData(res, prefs);
+        rulerData = new RulerData(resources, prefs);
         imageInfo = (ImageView) findViewById(R.id.image_info);
         textMeasureResult = (TextView) findViewById(R.id.text_measure_result);
 
         refreshImageUnitImage();
         showInfoScreen();
-        showSavedData();
+        refreshSavedData();
     }
 
     private TextView[] getTextSaveViews(){
@@ -47,13 +44,12 @@ public class RulerActivity extends AppCompatActivity {
             textSavedData[1] = (TextView) findViewById(R.id.text_save_2);
             textSavedData[2] = (TextView) findViewById(R.id.text_save_3);
             textSavedData[3] = (TextView) findViewById(R.id.text_save_4);
-            textSavedData[4] = (TextView) findViewById(R.id.text_save_5);
         }
 
         return textSavedData;
     }
 
-    private void showSavedData() {
+    private void refreshSavedData() {
         String[] savedData = rulerData.getSavedData();
         TextView[] textSaveViews = getTextSaveViews();
 
@@ -81,14 +77,13 @@ public class RulerActivity extends AppCompatActivity {
     public void clickUnit(View view){
         rulerData.swapInchMode();
         refreshImageUnitImage();
-        // TODO refresh ruler mode
+        // TODO refresh ruler mode or not (if added second ruler below)
     }
 
     public void clickSave(View view){
-
-        rulerData.saveMeasureResult(saveTest++ + "");
-        showSavedData();
-//        rulerData.saveMeasureResult(textMeasureResult.getText().toString());
+        rulerData.saveMeasureResult(textMeasureResult.getText().toString());
+        textMeasureResult.setText(resources.getString(R.string.text_measure_result_empty));
+        refreshSavedData();
     }
 
     public void clickExit(View view){
@@ -97,6 +92,6 @@ public class RulerActivity extends AppCompatActivity {
 
     private void refreshImageUnitImage(){
         ImageView imageUnit = (ImageView) findViewById(R.id.image_unit);
-        imageUnit.setImageResource(rulerData.isInInchMode() ? R.drawable.inch : R.drawable.cm);
+        imageUnit.setImageResource(rulerData.isInInchMode() ? R.mipmap.ic_inch : R.mipmap.ic_cm);
     }
 }

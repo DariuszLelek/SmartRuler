@@ -2,15 +2,11 @@ package com.darodev.smartruler.utility;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.support.annotation.IntegerRes;
 
 import com.darodev.smartruler.R;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.darodev.smartruler.R.drawable.cm;
-import static com.darodev.smartruler.R.drawable.inch;
 
 /**
  * Created by Dariusz Lelek on 10/15/2017.

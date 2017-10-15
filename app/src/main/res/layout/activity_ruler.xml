@@ -52,6 +52,8 @@
                     android:id="@+id/image_close"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginEnd="12dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/white_circle_left"
                     android:clickable="true"
@@ -62,14 +64,28 @@
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/ic_close_black_400dp"/>
 
+                <ImageView
+                    android:id="@+id/image_options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/white_circle"
+                    android:clickable="true"
+                    android:contentDescription="@string/image_unit"
+                    android:cropToPadding="false"
+                    android:onClick="clickOptions"
+                    android:padding="20dp"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/ic_settings_black_400dp"/>
+
                 <LinearLayout
                     android:id="@+id/layout_display"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginRight="26dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:background="@color/layout_content_text_background"
                     android:orientation="horizontal">
@@ -79,7 +95,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="@string/text_measure_result_holder"
+                        android:text="@string/text_measure_result_empty"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textSize="50sp"
@@ -96,119 +112,120 @@
                     android:contentDescription="@string/image_unit"
                     android:cropToPadding="false"
                     android:onClick="clickUnit"
-                    android:padding="20dp"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/cm"/>
+                    android:scaleType="center"
+                    app:srcCompat="@mipmap/ic_cm"/>
 
                 <ImageView
-                    android:id="@+id/image_options"
+                    android:id="@+id/image_save"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="12dp"
                     android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/white_circle_right"
                     android:clickable="true"
                     android:contentDescription="@string/image_options"
                     android:cropToPadding="false"
-                    android:onClick="clickOptions"
-                    android:padding="20dp"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/ic_settings_black_400dp"/>
+                    android:onClick="clickSave"
+                    android:scaleType="center"
+                    app:srcCompat="@mipmap/ic_save"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_save"
+            android:id="@+id/layout_footer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:gravity="top|start|center"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layout_save"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_weight="1"
+                android:background="@color/layout_save_background"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/layout_save_slots"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/text_empty_1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|center"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/app_name_display"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_4"
+                    android:textSize="12sp"/>
 
-                    <TextView
-                        android:id="@+id/text_save_1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLines="1"
-                        android:text="111"
-                        android:textAlignment="center"
-                        android:textColor="@color/save_1"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/text_save_2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLines="1"
-                        android:text="1.55"
-                        android:textAlignment="center"
-                        android:textColor="@color/save_2"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:id="@+id/text_save_3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLines="1"
-                        android:text="1.77"
-                        android:textAlignment="center"
-                        android:textColor="@color/save_3"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/text_save_4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLines="1"
-                        android:text="1"
-                        android:textAlignment="center"
-                        android:textColor="@color/save_4"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:id="@+id/text_save_5"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLines="1"
-                        android:text="66.5"
-                        android:textAlignment="center"
-                        android:textColor="@color/save_5"
-                        android:textSize="12sp"/>
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btn_save"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
+                <TextView
+                    android:id="@+id/text_empty_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@null"
-                    android:onClick="clickSave"
-                    android:text="@string/button_save_text"
-                    android:textAllCaps="false"
-                    android:textSize="24sp"/>
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_empty_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/text_save_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:maxLines="1"
+                    android:text="@string/empty_text_placeholder"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_1"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_save_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="@string/empty_text_placeholder"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_2"
+                    android:textSize="21sp"/>
+
+                <TextView
+                    android:id="@+id/text_save_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="@string/empty_text_placeholder"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_3"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/text_save_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="@string/empty_text_placeholder"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_4"
+                    android:textSize="15sp"/>
             </LinearLayout>
 
         </LinearLayout>
