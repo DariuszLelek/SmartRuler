@@ -1,7 +1,9 @@
 package com.darodev.smartruler;
 
+import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class RulerActivity extends AppCompatActivity {
 
