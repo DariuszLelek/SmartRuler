@@ -64,7 +64,7 @@
 
                 <LinearLayout
                     android:id="@+id/layout_display"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="12dp"
                     android:layout_marginLeft="20dp"
@@ -90,7 +90,6 @@
                     android:id="@+id/image_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="12dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/white_circle"
                     android:clickable="true"
@@ -105,6 +104,8 @@
                     android:id="@+id/image_options"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginLeft="12dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/white_circle_right"
                     android:clickable="true"
@@ -120,15 +121,92 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_ad"
+            android:id="@+id/layout_save"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="bottom|center"
-            android:orientation="vertical">
+            android:gravity="top|start|center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_save_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1.22"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_save_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1.55"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_2"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/text_save_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1.77"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_3"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/text_save_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1.90"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_4"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/text_save_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="66.5"
+                    android:textAlignment="center"
+                    android:textColor="@color/save_5"
+                    android:textSize="12sp"/>
+
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="clickSave"
+                    android:text="@string/button_save_text"
+                    android:textAllCaps="false"
+                    android:textSize="24sp"/>
+            </LinearLayout>
 
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_ad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center"
+        android:orientation="horizontal">
     </LinearLayout>
 
     <ImageView
@@ -136,6 +214,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/color_semi_transparent"
+        android:contentDescription="@string/image_info"
         android:onClick="clickInfo"
         android:visibility="invisible"
         app:srcCompat="@drawable/image_info"/>

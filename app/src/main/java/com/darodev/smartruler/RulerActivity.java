@@ -50,6 +50,10 @@ public class RulerActivity extends AppCompatActivity {
         // TODO refresh ruler mode
     }
 
+    public void clickSave(View view){
+
+    }
+
     public void clickExit(View view){
         finish();
     }

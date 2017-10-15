@@ -8,4 +8,6 @@
 
     <string name="unit_inch_mode_key">inchMode</string>
     <string name="calibrated_key">calibrated</string>
+    <string name="button_save_text">save</string>
+    <string name="image_info">Info Image</string>
 </resources>

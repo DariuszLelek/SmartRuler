@@ -8,4 +8,10 @@
     <color name="layout_content_background">#a3a3a3</color>
     <color name="layout_content_text_background">#ffffff</color>
 
+    <color name="save_1">#000000</color>
+    <color name="save_2">#0f0f0f</color>
+    <color name="save_3">#1e1e1e</color>
+    <color name="save_4">#2d2d2d</color>
+    <color name="save_5">#3c3c3c</color>
+
 </resources>
