@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import com.darodev.smartruler.R;
+import com.darodev.smartruler.ruler.Ruler;
+import com.darodev.smartruler.ruler.RulerType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +34,15 @@ public class RulerData {
         return preferences.getBoolean(getKey(R.string.calibrated_key), false);
     }
 
+    public boolean isRulerSet(Ruler ruler){
+        if(ruler == Ruler.LEFT_PHONE_EDGE){
+            return preferences.getBoolean(getKey(R.string.phone_set_edge_left_key), false);
+        }else if (ruler == Ruler.RIGHT_PHONE_EDGE) {
+            return preferences.getBoolean(getKey(R.string.phone_set_edge_right_key), false);
+        } else
+            return ruler == Ruler.SCREEN && preferences.getBoolean(getKey(R.string.phone_set_screen_key), false);
+    }
+
     public void swapInchMode(){
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(getKey(R.string.unit_inch_mode_key), !isInInchMode());
@@ -58,14 +69,26 @@ public class RulerData {
         return savedData;
     }
 
-    public int getPixelsInCm(){
-        // TODO
-        return 100;
+    public int getRulerStartPoint(RulerType type){
+        Ruler startPoint = type.getStartPoint();
+        if(startPoint == Ruler.SCREEN){
+            return getPixelsIn(type.getUnit()) / getOffsetDivider(type.getUnit());
+        }else if(startPoint == Ruler.LEFT_PHONE_EDGE){
+            // TODO
+            return -300;
+        }else if(startPoint == Ruler.RIGHT_PHONE_EDGE){
+            // TODO
+            return 300;
+        }else{
+            return 0;
+        }
+    }
+    public int getPixelsIn(Unit unit){
+        return unit == Unit.CM ? 100 : 250;
     }
 
-    public int getPixelsInInch(){
-        // TODO
-        return 30;
+    private int getOffsetDivider(Unit unit){
+        return unit == Unit.CM ? 2 : 5;
     }
 
     private Unit getUnit(){

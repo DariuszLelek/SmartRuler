@@ -3,12 +3,14 @@ package com.darodev.smartruler;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.darodev.smartruler.ruler.Ruler;
 import com.darodev.smartruler.ruler.RulerBitmapProvider;
 import com.darodev.smartruler.utility.RulerData;
 import com.darodev.smartruler.utility.Unit;
@@ -98,12 +100,21 @@ public class RulerActivity extends AppCompatActivity {
             public void run() {
                 imageRulerView.setDrawingCacheEnabled(true);
                 imageRulerView.buildDrawingCache();
-                rulerBitmapProvider = new RulerBitmapProvider(imageRulerView.getDrawingCache(), rulerData);
-
-                refreshRulerBitmap();
+                prepareRulerBitmapProvider(imageRulerView.getDrawingCache());
             }
         });
+    }
 
+    private void prepareRulerBitmapProvider(Bitmap imageRulerBitmap){
+        rulerBitmapProvider = new RulerBitmapProvider(imageRulerBitmap, rulerData);
+
+        for(Ruler ruler : Ruler.values()){
+            if(rulerData.isRulerSet(ruler)){
+                rulerBitmapProvider.prepareRulers(ruler);
+            }
+        }
+
+        refreshRulerBitmap();
     }
 
     private void refreshRulerBitmap(){
