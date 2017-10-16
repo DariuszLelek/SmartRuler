@@ -69,9 +69,10 @@ public class RulerActivity extends AppCompatActivity {
     }
 
     private void showInfoScreen(){
-        if(!rulerData.isCalibrated()){
-            imageInfo.setVisibility(View.VISIBLE);
-        }
+        // TODO at first run
+//        if(!rulerData.isCalibrated()){
+//            imageInfo.setVisibility(View.VISIBLE);
+//        }
     }
 
     public void clickInfo(View view){

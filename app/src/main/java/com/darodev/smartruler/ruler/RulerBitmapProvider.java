@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static android.R.attr.offset;
 import static com.darodev.smartruler.utility.Unit.CM;
 
 /**

@@ -30,17 +30,14 @@ public class RulerData {
         return preferences.getBoolean(getKey(R.string.unit_inch_mode_key), false);
     }
 
-    public boolean isCalibrated(){
-        return preferences.getBoolean(getKey(R.string.calibrated_key), false);
-    }
-
     public boolean isRulerSet(Ruler ruler){
         if(ruler == Ruler.LEFT_PHONE_EDGE){
             return preferences.getBoolean(getKey(R.string.phone_set_edge_left_key), false);
         }else if (ruler == Ruler.RIGHT_PHONE_EDGE) {
             return preferences.getBoolean(getKey(R.string.phone_set_edge_right_key), false);
         } else
-            return ruler == Ruler.SCREEN && preferences.getBoolean(getKey(R.string.phone_set_screen_key), false);
+            // TODO change flag to false after testing
+            return ruler == Ruler.SCREEN && preferences.getBoolean(getKey(R.string.phone_set_screen_key), true);
     }
 
     public void swapInchMode(){
