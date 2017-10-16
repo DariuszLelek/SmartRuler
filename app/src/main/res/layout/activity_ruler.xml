@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/image_ruler"
-                app:srcCompat="@color/color_transparent"/>
+                app:srcCompat="@color/layout_image_ruler_background"/>
 
         </LinearLayout>
 

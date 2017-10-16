@@ -58,6 +58,16 @@ public class RulerData {
         return savedData;
     }
 
+    public int getPixelsInCm(){
+        // TODO
+        return 100;
+    }
+
+    public int getPixelsInInch(){
+        // TODO
+        return 30;
+    }
+
     private Unit getUnit(){
         return isInInchMode() ? Unit.INCH : Unit.CM;
     }

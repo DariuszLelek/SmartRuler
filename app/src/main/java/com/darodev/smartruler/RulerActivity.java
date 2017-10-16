@@ -9,14 +9,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.darodev.smartruler.ruler.RulerBitmapProvider;
 import com.darodev.smartruler.utility.RulerData;
+import com.darodev.smartruler.utility.Unit;
 
 public class RulerActivity extends AppCompatActivity {
     private RulerData rulerData;
-    private ImageView imageInfo;
+    private ImageView imageInfo, imageRuler;
     private TextView[] textSavedData;
     private TextView textMeasureResult;
     private Resources resources;
+    private RulerBitmapProvider rulerBitmapProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +29,16 @@ public class RulerActivity extends AppCompatActivity {
         resources = getResources();
         SharedPreferences prefs = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE);
 
-        rulerData = new RulerData(resources, prefs);
+        imageRuler = (ImageView) findViewById(R.id.image_ruler);
         imageInfo = (ImageView) findViewById(R.id.image_info);
         textMeasureResult = (TextView) findViewById(R.id.text_measure_result);
+        rulerData = new RulerData(resources, prefs);
 
         refreshImageUnitImage();
         showInfoScreen();
         refreshSavedData();
+
+        prepareImageRulerBitmap(imageRuler);
     }
 
     private TextView[] getTextSaveViews(){
@@ -77,13 +83,35 @@ public class RulerActivity extends AppCompatActivity {
     public void clickUnit(View view){
         rulerData.swapInchMode();
         refreshImageUnitImage();
-        // TODO refresh ruler mode or not (if added second ruler below)
+        refreshRulerBitmap();
     }
 
     public void clickSave(View view){
         rulerData.saveMeasureResult(textMeasureResult.getText().toString());
         textMeasureResult.setText(resources.getString(R.string.text_measure_result_empty));
         refreshSavedData();
+    }
+
+    private void prepareImageRulerBitmap(final ImageView imageRulerView){
+        imageRulerView.post(new Runnable() {
+            @Override
+            public void run() {
+                imageRulerView.setDrawingCacheEnabled(true);
+                imageRulerView.buildDrawingCache();
+                rulerBitmapProvider = new RulerBitmapProvider(imageRulerView.getDrawingCache(), rulerData);
+
+                refreshRulerBitmap();
+            }
+        });
+
+    }
+
+    private void refreshRulerBitmap(){
+        if(rulerData.isInInchMode()){
+            imageRuler.setImageBitmap(rulerBitmapProvider.getRulerBitmap(Unit.INCH));
+        }else{
+            imageRuler.setImageBitmap(rulerBitmapProvider.getRulerBitmap(Unit.CM));
+        }
     }
 
     public void clickExit(View view){
