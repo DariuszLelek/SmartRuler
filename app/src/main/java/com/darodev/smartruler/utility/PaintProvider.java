@@ -6,8 +6,6 @@ import android.graphics.Paint;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static android.R.attr.strokeWidth;
-
 /**
  * Created by Dariusz Lelek on 10/16/2017.
  * dariusz.lelek@gmail.com

@@ -12,16 +12,8 @@ import java.util.TreeMap;
 public class LineStepLevelHolder {
     private final TreeMap<Integer, Integer> levelByStep = new TreeMap<>(Collections.reverseOrder());
 
-    private final int smallestStep;
-
     public LineStepLevelHolder(LineStepLevel[] stepLevelsArray){
         populateLevelByStep(stepLevelsArray);
-
-        smallestStep = levelByStep.lastKey();
-    }
-
-    public int getSmallestStep(){
-        return smallestStep;
     }
 
     public int getLevelByStep(int step){

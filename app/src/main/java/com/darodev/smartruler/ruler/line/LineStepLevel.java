@@ -13,11 +13,11 @@ public class LineStepLevel {
         this.level = level;
     }
 
-    public int getStep() {
+    int getStep() {
         return step;
     }
 
-    public int getLevel() {
+    int getLevel() {
         return level;
     }
 }

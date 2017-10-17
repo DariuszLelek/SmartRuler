@@ -5,7 +5,7 @@ package com.darodev.smartruler.utility;
  * dariusz.lelek@gmail.com
  */
 
-public enum Constant {
+enum Constant {
     CM_IN_INCH(2.54f),
     CREDIT_CARD_WIDTH_CM(53.98f),
     CREDIT_CARD_HEIGHT_CM(85.60f);

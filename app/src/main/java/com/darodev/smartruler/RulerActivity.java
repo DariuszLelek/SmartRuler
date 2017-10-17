@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.darodev.smartruler.ruler.Ruler;
 import com.darodev.smartruler.ruler.RulerBitmapProvider;
-import com.darodev.smartruler.ruler.RulerType;
 import com.darodev.smartruler.utility.RulerData;
 import com.darodev.smartruler.utility.Unit;
 
@@ -24,7 +23,7 @@ public class RulerActivity extends AppCompatActivity {
     private TextView textMeasureResult, textInfo;
     private Resources resources;
     private RulerBitmapProvider rulerBitmapProvider;
-    private Ruler currentRuler, previousRuler;
+    private Ruler currentRuler;
     private ImageView imageUnit, imageRulerButton, imageShadowL, imageShadowR;
 
     @Override
@@ -59,8 +58,6 @@ public class RulerActivity extends AppCompatActivity {
         refreshImageUnitImage();
         refreshRulerShadow();
         refreshTextInfo();
-
-        //showInfoScreen();
         refreshSavedData();
 
         prepareImageRulerBitmap(imageRuler);
@@ -89,13 +86,6 @@ public class RulerActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             textSaveViews[i].setText(savedData[i]);
         }
-    }
-
-    private void showInfoScreen(){
-        // TODO at first run
-//        if(!rulerData.isCalibrated()){
-//            imageInfo.setVisibility(View.VISIBLE);
-//        }
     }
 
     public void clickInfo(View view){
