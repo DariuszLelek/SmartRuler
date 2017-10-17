@@ -8,6 +8,7 @@ import com.darodev.smartruler.R;
 import com.darodev.smartruler.ruler.Ruler;
 import com.darodev.smartruler.ruler.RulerType;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -83,7 +84,15 @@ public class RulerData {
         }
     }
 
+    public String getMeasureResult(float pointX){
+        int pixelsInCm = getPixelsIn(Unit.CM);
+        float reult = pointX/pixelsInCm;
+        return String.format(Locale.ENGLISH, "%.2f", reult);
+    }
+
     public int getPixelsIn(Unit unit) {
+
+
         return unit == Unit.CM ? Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue()) : Math.round(metrics.xdpi);
     }
 

@@ -53,6 +53,12 @@
                     android:visibility="invisible"
                     app:srcCompat="@drawable/shadow_right_black"/>
 
+                <ImageView
+                    android:id="@+id/image_ruler_measure"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@color/color_transparent"/>
+
                 <TextView
                     android:id="@+id/text_info"
                     android:layout_width="wrap_content"

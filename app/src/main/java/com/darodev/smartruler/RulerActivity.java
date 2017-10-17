@@ -8,18 +8,23 @@ import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.darodev.smartruler.ruler.Ruler;
 import com.darodev.smartruler.ruler.RulerBitmapProvider;
+import com.darodev.smartruler.ruler.RulerMeasure;
 import com.darodev.smartruler.utility.RulerData;
 import com.darodev.smartruler.utility.Unit;
 
+import org.joda.time.DateTime;
+
 public class RulerActivity extends AppCompatActivity {
     private RulerData rulerData;
-    private ImageView imageInfo, imageRuler;
+    private RulerMeasure rulerMeasure;
+    private ImageView imageInfo, imageRuler, imageRulerMeasure;
     private TextView[] textSavedData;
     private TextView textMeasureResult, textInfo;
     private Resources resources;
@@ -45,6 +50,7 @@ public class RulerActivity extends AppCompatActivity {
 
 
         imageRuler = (ImageView) findViewById(R.id.image_ruler);
+        imageRulerMeasure = (ImageView) findViewById(R.id.image_ruler);
         imageUnit = (ImageView) findViewById(R.id.image_unit);
         imageRulerButton = (ImageView) findViewById(R.id.image_ruler_button);
         imageInfo = (ImageView) findViewById(R.id.image_info);
@@ -64,7 +70,9 @@ public class RulerActivity extends AppCompatActivity {
         refreshTextInfo();
         refreshSavedData();
 
-        prepareImageRulerBitmap(imageRuler);
+        prepareImageRulerBitmap();
+        prepareImageRulerMeasureBitmap();
+        prepareImageRulerListener();
     }
 
     private TextView[] getTextSaveViews(){
@@ -112,13 +120,50 @@ public class RulerActivity extends AppCompatActivity {
         refreshSavedData();
     }
 
-    private void prepareImageRulerBitmap(final ImageView imageRulerView){
-        imageRulerView.post(new Runnable() {
+    private void prepareImageRulerListener(){
+        imageRuler.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                if(action == MotionEvent.ACTION_UP){
+                    // TODO
+                    return false;
+                }
+
+                if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE){
+                    if(rulerMeasure != null && rulerMeasure.canDrawNewMeasure(DateTime.now())){
+                        float pointX = event.getX();
+
+
+
+                        imageRulerMeasure.setImageBitmap(rulerMeasure.getMeasureBitmap(Math.round(pointX)));
+                        textMeasureResult.setText(rulerData.getMeasureResult(pointX));
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void prepareImageRulerMeasureBitmap(){
+        imageRulerMeasure.post(new Runnable() {
             @Override
             public void run() {
-                imageRulerView.setDrawingCacheEnabled(true);
-                imageRulerView.buildDrawingCache();
-                prepareRulerBitmapProvider(imageRulerView.getDrawingCache());
+                imageRulerMeasure.setDrawingCacheEnabled(true);
+                imageRulerMeasure.buildDrawingCache();
+                rulerMeasure = new RulerMeasure(imageRulerMeasure.getDrawingCache(), rulerData);
+            }
+        });
+    }
+
+    private void prepareImageRulerBitmap(){
+        imageRulerMeasure.post(new Runnable() {
+            @Override
+            public void run() {
+                imageRulerMeasure.setDrawingCacheEnabled(true);
+                imageRulerMeasure.buildDrawingCache();
+                prepareRulerBitmapProvider(imageRulerMeasure.getDrawingCache());
             }
         });
     }
@@ -136,11 +181,8 @@ public class RulerActivity extends AppCompatActivity {
     }
 
     private void refreshRulerBitmap(){
-        if(rulerData.isInInchMode()){
-            imageRuler.setImageBitmap(rulerBitmapProvider.getRulerBitmap(Unit.INCH, currentRuler));
-        }else{
-            imageRuler.setImageBitmap(rulerBitmapProvider.getRulerBitmap(Unit.CM, currentRuler));
-        }
+        Unit unit = rulerData.isInInchMode() ? Unit.INCH : Unit.CM;
+        imageRuler.setImageBitmap(rulerBitmapProvider.getRulerBitmap(unit, currentRuler));
     }
 
     public void clickRulerType(View view){
