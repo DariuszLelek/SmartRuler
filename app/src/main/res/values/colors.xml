@@ -9,6 +9,7 @@
     <color name="layout_save_background">#d9d9d9</color>
     <color name="layout_content_text_background">#ffffff</color>
     <color name="layout_image_ruler_background">#ffffff</color>
+    <color name="layout_content_result_background">#687a66</color>
 
     <color name="save_1">#000000</color>
     <color name="save_2">#1e1e1e</color>

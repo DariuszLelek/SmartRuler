@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -53,6 +54,9 @@ public class RulerActivity extends AppCompatActivity {
         textInfo = (TextView) findViewById(R.id.text_info);
         rulerData = new RulerData(resources, prefs, metrics);
         currentRuler = rulerData.getCurrentRuler();
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/digital-7.ttf");
+        textMeasureResult.setTypeface(typeface);
 
         refreshImageRulerType();
         refreshImageUnitImage();
