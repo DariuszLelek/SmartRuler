@@ -12,6 +12,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.lang.Long.parseLong;
+
 /**
  * Created by Dariusz Lelek on 10/15/2017.
  * dariusz.lelek@gmail.com
@@ -55,7 +57,7 @@ public class RulerData {
         if (validResult(result)) {
             String[] saveData = getSavedData();
             System.arraycopy(saveData, 0, saveData, 1, saveData.length - 1);
-            saveData[0] = result + " " + getUnit().toString();
+            saveData[0] = result + (getUnit() == Unit.INCH ? "\"" : "");
             saveData(saveData);
         }
     }
@@ -84,15 +86,14 @@ public class RulerData {
         }
     }
 
-    public String getMeasureResult(float pointX){
+    public String getMeasureResult(float pointX, Ruler ruler){
         int pixelsInCm = getPixelsIn(Unit.CM);
-        float reult = pointX/pixelsInCm;
-        return String.format(Locale.ENGLISH, "%.2f", reult);
+        // TODO fix for RulerType
+        float result = (pointX)/pixelsInCm;
+        return String.format(Locale.ENGLISH, "%.2f", result);
     }
 
     public int getPixelsIn(Unit unit) {
-
-
         return unit == Unit.CM ? Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue()) : Math.round(metrics.xdpi);
     }
 
@@ -127,7 +128,7 @@ public class RulerData {
 
     private boolean validResult(String result) {
         try {
-            Integer value = Integer.parseInt(result);
+            Double value = Double.parseDouble(result);
             return value > 0;
         } catch (NumberFormatException ex) {
             return false;

@@ -1,8 +1,10 @@
 package com.darodev.smartruler.ruler;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 
 import com.darodev.smartruler.ruler.line.LineStepLevel;
 import com.darodev.smartruler.ruler.line.LineStepLevelHolder;
@@ -27,13 +29,15 @@ public class RulerBitmapProvider {
     private static final int unitFullWidth = 3;
     private static final int unitFractionWidth = 2;
 
+    private final Resources res;
     private final TreeMap<Integer, Integer> lineHeightByLevel = new TreeMap<>();
-    private final Map<RulerType, Bitmap> bitmapByRulerType = new HashMap<>();
+    private final Map<RulerType, BitmapDrawable> bitmapByRulerType = new HashMap<>();
 
     private final RulerData rulerData;
 
-    public RulerBitmapProvider(Bitmap imageRulerBitmap, RulerData rulerData) {
+    public RulerBitmapProvider(Bitmap imageRulerBitmap, RulerData rulerData, Resources res) {
         this.rulerData = rulerData;
+        this.res = res;
 
         prepareLinesHeight(imageRulerBitmap.getHeight());
 
@@ -42,7 +46,7 @@ public class RulerBitmapProvider {
 
     private void populateMapWithDefaultBitmaps(Bitmap defaultBitmap){
         for(RulerType rulerType : RulerType.values()){
-            bitmapByRulerType.put(rulerType, Bitmap.createBitmap(defaultBitmap));
+            bitmapByRulerType.put(rulerType, new BitmapDrawable(res, Bitmap.createBitmap(defaultBitmap)));
         }
     }
 
@@ -61,7 +65,7 @@ public class RulerBitmapProvider {
         }
     }
 
-    public Bitmap getRulerBitmap(Unit unit, Ruler ruler) {
+    public BitmapDrawable getRulerBitmap(Unit unit, Ruler ruler) {
         return bitmapByRulerType.get(RulerType.getType(unit, ruler));
     }
 
@@ -78,7 +82,7 @@ public class RulerBitmapProvider {
     private void prepareRulerBitmap(RulerType type) {
         Unit unit = type.getUnit();
         int startPoint = rulerData.getRulerStartPoint(type);
-        Canvas canvas = new Canvas(bitmapByRulerType.get(type));
+        Canvas canvas = new Canvas(bitmapByRulerType.get(type).getBitmap());
         LineStepLevelHolder lineStepLevelHolder = getLineStepLevelHolder(unit);
 
         if(type.isFromLeft()){

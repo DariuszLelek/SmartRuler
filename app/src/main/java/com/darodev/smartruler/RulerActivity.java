@@ -24,7 +24,7 @@ import org.joda.time.DateTime;
 public class RulerActivity extends AppCompatActivity {
     private RulerData rulerData;
     private RulerMeasure rulerMeasure;
-    private ImageView imageInfo, imageRuler, imageRulerMeasure;
+    private ImageView imageInfo, imageRuler;
     private TextView[] textSavedData;
     private TextView textMeasureResult, textInfo;
     private Resources resources;
@@ -50,7 +50,6 @@ public class RulerActivity extends AppCompatActivity {
 
 
         imageRuler = (ImageView) findViewById(R.id.image_ruler);
-        imageRulerMeasure = (ImageView) findViewById(R.id.image_ruler);
         imageUnit = (ImageView) findViewById(R.id.image_unit);
         imageRulerButton = (ImageView) findViewById(R.id.image_ruler_button);
         imageInfo = (ImageView) findViewById(R.id.image_info);
@@ -71,7 +70,6 @@ public class RulerActivity extends AppCompatActivity {
         refreshSavedData();
 
         prepareImageRulerBitmap();
-        prepareImageRulerMeasureBitmap();
         prepareImageRulerListener();
     }
 
@@ -111,12 +109,13 @@ public class RulerActivity extends AppCompatActivity {
     public void clickUnit(View view){
         rulerData.swapInchMode();
         refreshImageUnitImage();
-        refreshRulerBitmap();
+        refreshRulerBackgroundBitmap();
     }
 
     public void clickSave(View view){
         rulerData.saveMeasureResult(textMeasureResult.getText().toString());
-        textMeasureResult.setText(resources.getString(R.string.text_measure_result_empty));
+
+        clearMeasure();
         refreshSavedData();
     }
 
@@ -125,19 +124,11 @@ public class RulerActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
-                if(action == MotionEvent.ACTION_UP){
-                    // TODO
-                    return false;
-                }
-
                 if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE){
                     if(rulerMeasure != null && rulerMeasure.canDrawNewMeasure(DateTime.now())){
                         float pointX = event.getX();
-
-
-
-                        imageRulerMeasure.setImageBitmap(rulerMeasure.getMeasureBitmap(Math.round(pointX)));
-                        textMeasureResult.setText(rulerData.getMeasureResult(pointX));
+                        imageRuler.setImageBitmap(rulerMeasure.getMeasureBitmap(Math.round(pointX)));
+                        textMeasureResult.setText(rulerData.getMeasureResult(pointX, currentRuler));
                     }
                     return true;
                 }
@@ -146,30 +137,26 @@ public class RulerActivity extends AppCompatActivity {
         });
     }
 
-    private void prepareImageRulerMeasureBitmap(){
-        imageRulerMeasure.post(new Runnable() {
+    private void prepareImageRulerBitmap(){
+        imageRuler.post(new Runnable() {
             @Override
             public void run() {
-                imageRulerMeasure.setDrawingCacheEnabled(true);
-                imageRulerMeasure.buildDrawingCache();
-                rulerMeasure = new RulerMeasure(imageRulerMeasure.getDrawingCache(), rulerData);
+                imageRuler.setDrawingCacheEnabled(true);
+                imageRuler.buildDrawingCache();
+                Bitmap drawingCacheBitmap = imageRuler.getDrawingCache();
+
+                prepareRulerBitmapProvider(drawingCacheBitmap);
+                prepareRulerMeasure(drawingCacheBitmap);
             }
         });
     }
 
-    private void prepareImageRulerBitmap(){
-        imageRulerMeasure.post(new Runnable() {
-            @Override
-            public void run() {
-                imageRulerMeasure.setDrawingCacheEnabled(true);
-                imageRulerMeasure.buildDrawingCache();
-                prepareRulerBitmapProvider(imageRulerMeasure.getDrawingCache());
-            }
-        });
+    private void prepareRulerMeasure(Bitmap imageRulerBitmap){
+        rulerMeasure = new RulerMeasure(imageRulerBitmap, rulerData);
     }
 
     private void prepareRulerBitmapProvider(Bitmap imageRulerBitmap){
-        rulerBitmapProvider = new RulerBitmapProvider(imageRulerBitmap, rulerData);
+        rulerBitmapProvider = new RulerBitmapProvider(imageRulerBitmap, rulerData, resources);
 
         for(Ruler ruler : Ruler.values()){
             if(rulerData.isRulerSet(ruler)){
@@ -177,12 +164,19 @@ public class RulerActivity extends AppCompatActivity {
             }
         }
 
-        refreshRulerBitmap();
+        refreshRulerBackgroundBitmap();
     }
 
-    private void refreshRulerBitmap(){
+    private void clearMeasure(){
+        resetMeasureResult();
+        imageRuler.setImageBitmap(null);
+    }
+
+    private void refreshRulerBackgroundBitmap(){
+        clearMeasure();
+
         Unit unit = rulerData.isInInchMode() ? Unit.INCH : Unit.CM;
-        imageRuler.setImageBitmap(rulerBitmapProvider.getRulerBitmap(unit, currentRuler));
+        imageRuler.setBackground(rulerBitmapProvider.getRulerBitmap(unit, currentRuler));
     }
 
     public void clickRulerType(View view){
@@ -194,7 +188,7 @@ public class RulerActivity extends AppCompatActivity {
             if(rulerData.isRulerSet(ruler)){
                 currentRuler = ruler;
                 rulerData.setCurrentRuler(currentRuler);
-                refreshRulerBitmap();
+                refreshRulerBackgroundBitmap();
                 refreshImageRulerType();
                 refreshRulerShadow();
                 break;
@@ -205,6 +199,10 @@ public class RulerActivity extends AppCompatActivity {
 
     public void clickExit(View view){
         finish();
+    }
+
+    private void resetMeasureResult(){
+        textMeasureResult.setText(resources.getString(R.string.text_measure_result_empty));
     }
 
     private void refreshTextInfo(){

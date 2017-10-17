@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/image_ruler"
-                app:srcCompat="@color/layout_image_ruler_background"/>
+                />
 
             <FrameLayout
                 android:id="@+id/layout_ruler_hud"
@@ -52,12 +52,6 @@
                     android:contentDescription="@string/image_shadow_right"
                     android:visibility="invisible"
                     app:srcCompat="@drawable/shadow_right_black"/>
-
-                <ImageView
-                    android:id="@+id/image_ruler_measure"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@color/color_transparent"/>
 
                 <TextView
                     android:id="@+id/text_info"
@@ -193,7 +187,7 @@
                     android:id="@+id/text_empty_1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="2.25"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/app_name_display"
@@ -202,20 +196,10 @@
                     android:textSize="12sp"/>
 
                 <TextView
-                    android:id="@+id/text_empty_2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:maxLines="1"
-                    android:textAlignment="center"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-                <TextView
                     android:id="@+id/text_empty_3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:maxLines="1"
                     android:textAlignment="center"
                     android:textSize="14sp"/>
@@ -224,7 +208,7 @@
                     android:id="@+id/text_save_1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
+                    android:layout_weight="2"
                     android:maxLines="1"
                     android:text="@string/empty_text_placeholder"
                     android:textAlignment="center"
@@ -236,7 +220,7 @@
                     android:id="@+id/text_save_2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:maxLines="1"
                     android:text="@string/empty_text_placeholder"
                     android:textAlignment="center"
@@ -247,7 +231,7 @@
                     android:id="@+id/text_save_3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.25"
                     android:maxLines="1"
                     android:text="@string/empty_text_placeholder"
                     android:textAlignment="center"

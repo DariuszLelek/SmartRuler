@@ -48,7 +48,7 @@ public class RulerMeasure {
         lastMeasureX = pointX;
         lastMeasureTime = DateTime.now();
 
-        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapH,  Bitmap.Config.ALPHA_8);
+        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapH,  Bitmap.Config.ARGB_4444);
         drawMeasure(bitmap);
 
         return bitmap;
