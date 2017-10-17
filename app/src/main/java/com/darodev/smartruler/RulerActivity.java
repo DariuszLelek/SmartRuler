@@ -126,6 +126,10 @@ public class RulerActivity extends AppCompatActivity {
         }
     }
 
+    public void clickRulerType(View view){
+
+    }
+
     public void clickExit(View view){
         finish();
     }

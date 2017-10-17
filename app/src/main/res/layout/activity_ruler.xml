@@ -49,20 +49,20 @@
                 android:paddingTop="16dp">
 
                 <ImageView
-                    android:id="@+id/image_close"
+                    android:id="@+id/image_ruler_type"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="12dp"
                     android:layout_marginEnd="12dp"
+                    android:layout_marginRight="12dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/white_circle_left"
                     android:clickable="true"
-                    android:contentDescription="@string/image_close"
+                    android:contentDescription="@string/image_ruler_type"
                     android:cropToPadding="false"
-                    android:onClick="clickExit"
+                    android:onClick="clickRulerType"
                     android:padding="20dp"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/ic_close_black_400dp"/>
+                    app:srcCompat="@drawable/phone_center"/>
 
                 <ImageView
                     android:id="@+id/image_options"
