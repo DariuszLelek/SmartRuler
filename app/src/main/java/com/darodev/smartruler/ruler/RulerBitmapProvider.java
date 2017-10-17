@@ -45,9 +45,9 @@ public class RulerBitmapProvider {
     public void prepareRulers(Ruler ruler){
         if(ruler == Ruler.SCREEN){
             prepareRulerBitmap(RulerType.CM_SCREEN);
-            prepareRulerBitmap(RulerType.CM_SCREEN_R);
+            //prepareRulerBitmap(RulerType.CM_SCREEN_R);
             prepareRulerBitmap(RulerType.INCH_SCREEN);
-            prepareRulerBitmap(RulerType.INCH_SCREEN_R);
+            //prepareRulerBitmap(RulerType.INCH_SCREEN_R);
         }else if(ruler == Ruler.LEFT_PHONE_EDGE){
             prepareRulerBitmap(RulerType.CM_PHONE_EDGE_L);
             prepareRulerBitmap(RulerType.INCH_PHONE_EDGE_L);
@@ -57,9 +57,8 @@ public class RulerBitmapProvider {
         }
     }
 
-    public Bitmap getRulerBitmap(Unit unit) {
-        RulerType type = unit == CM ? RulerType.CM_SCREEN : RulerType.INCH_SCREEN;
-        return bitmapByRulerType.get(type);
+    public Bitmap getRulerBitmap(Unit unit, Ruler ruler) {
+        return bitmapByRulerType.get(RulerType.getType(unit, ruler));
     }
 
     private void prepareLinesHeight(int bitmapHeight) {

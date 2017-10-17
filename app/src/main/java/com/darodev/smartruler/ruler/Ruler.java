@@ -6,5 +6,14 @@ package com.darodev.smartruler.ruler;
  */
 
 public enum Ruler {
-    SCREEN, LEFT_PHONE_EDGE, RIGHT_PHONE_EDGE
+    SCREEN, LEFT_PHONE_EDGE, RIGHT_PHONE_EDGE;
+
+    public static Ruler getByString(String string){
+        for(Ruler ruler : values()){
+            if(ruler.name().equalsIgnoreCase(string)){
+                return ruler;
+            }
+        }
+        return SCREEN;
+    }
 }

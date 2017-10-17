@@ -35,12 +35,9 @@ public class RulerData {
 
     public boolean isRulerSet(Ruler ruler) {
         if (ruler == Ruler.LEFT_PHONE_EDGE) {
-            return preferences.getBoolean(getKey(R.string.phone_set_edge_left_key), false);
-        } else if (ruler == Ruler.RIGHT_PHONE_EDGE) {
-            return preferences.getBoolean(getKey(R.string.phone_set_edge_right_key), false);
+            return preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 0) < 0;
         } else
-            // TODO change flag to false after testing
-            return ruler == Ruler.SCREEN && preferences.getBoolean(getKey(R.string.phone_set_screen_key), true);
+            return ruler != Ruler.RIGHT_PHONE_EDGE || preferences.getInt(getKey(R.string.pixels_to_right_edge_key), 0) < 0;
     }
 
     public void swapInchMode() {
@@ -63,18 +60,18 @@ public class RulerData {
         String[] savedData = new String[saveSlotKeys.length];
 
         for (int i = 0; i < saveSlotKeys.length; i++) {
-            savedData[i] = preferences.getString(saveSlotKeys[i], "empty");
+            savedData[i] = preferences.getString(saveSlotKeys[i], "EMPTY");
         }
 
         return savedData;
     }
 
     public int getRulerStartPoint(RulerType type) {
-        Ruler startPoint = type.getStartPoint();
+        Ruler startPoint = type.getRuler();
         if (startPoint == Ruler.SCREEN) {
             return getPixelsIn(type.getUnit()) / getOffsetDivider(type.getUnit());
         } else if (startPoint == Ruler.LEFT_PHONE_EDGE) {
-            return preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 0);
+            return preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 300);
         } else if (startPoint == Ruler.RIGHT_PHONE_EDGE) {
             return preferences.getInt(getKey(R.string.pixels_to_right_edge_key), 0);
         } else {
@@ -88,6 +85,16 @@ public class RulerData {
 
     private int getOffsetDivider(Unit unit) {
         return unit.getOffset();
+    }
+
+    public void setCurrentRuler(Ruler ruler){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(getKey(R.string.current_ruler_key), ruler.name());
+        editor.apply();
+    }
+
+    public Ruler getCurrentRuler(){
+        return Ruler.getByString(preferences.getString(getKey(R.string.current_ruler_key), "SCREEN"));
     }
 
     private Unit getUnit() {
