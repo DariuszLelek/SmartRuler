@@ -21,7 +21,7 @@ public class RulerActivity extends AppCompatActivity {
     private RulerData rulerData;
     private ImageView imageInfo, imageRuler;
     private TextView[] textSavedData;
-    private TextView textMeasureResult;
+    private TextView textMeasureResult, textInfo;
     private Resources resources;
     private RulerBitmapProvider rulerBitmapProvider;
     private Ruler currentRuler, previousRuler;
@@ -51,13 +51,16 @@ public class RulerActivity extends AppCompatActivity {
         imageShadowL = (ImageView) findViewById(R.id.image_shadow_left);
         imageShadowR = (ImageView) findViewById(R.id.image_shadow_right);
         textMeasureResult = (TextView) findViewById(R.id.text_measure_result);
+        textInfo = (TextView) findViewById(R.id.text_info);
         rulerData = new RulerData(resources, prefs, metrics);
         currentRuler = rulerData.getCurrentRuler();
 
         refreshImageRulerType();
         refreshImageUnitImage();
         refreshRulerShadow();
-        showInfoScreen();
+        refreshTextInfo();
+
+        //showInfoScreen();
         refreshSavedData();
 
         prepareImageRulerBitmap(imageRuler);
@@ -162,22 +165,17 @@ public class RulerActivity extends AppCompatActivity {
             }
             rulersNum --;
         }
-//
-//
-//        for(Ruler ruler : Ruler.values()){
-//            if(ruler != currentRuler && rulerData.isRulerSet(ruler)){
-//                currentRuler = ruler;
-//                rulerData.setCurrentRuler(currentRuler);
-//                refreshRulerBitmap();
-//                refreshImageRulerType();
-//                refreshRulerShadow();
-//                break;
-//            }
-//        }
     }
 
     public void clickExit(View view){
         finish();
+    }
+
+    private void refreshTextInfo(){
+        if(!rulerData.isRulerCalibrated()){
+            textInfo.setText(resources.getString(R.string.info_ruler_not_calibrated));
+        }
+
     }
 
     private void refreshImageRulerType(){

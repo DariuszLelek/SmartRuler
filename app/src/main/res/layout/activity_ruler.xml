@@ -51,6 +51,16 @@
                     android:visibility="invisible"
                     app:srcCompat="@drawable/shadow_right_black"/>
 
+                <TextView
+                    android:id="@+id/text_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/text_info"
+                    android:textColor="@color/save_4"
+                    android:textSize="12sp"/>
+
             </FrameLayout>
         </FrameLayout>
 
@@ -160,7 +170,6 @@
             android:id="@+id/layout_footer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -168,6 +177,7 @@
                 android:id="@+id/layout_save"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_weight="1"
                 android:background="@color/layout_save_background"
                 android:gravity="center_vertical"

@@ -29,6 +29,10 @@ public class RulerData {
         this.metrics = metrics;
     }
 
+    public boolean isRulerCalibrated(){
+        return preferences.getBoolean(getKey(R.string.ruler_calibrated_key), false);
+    }
+
     public boolean isInInchMode() {
         return preferences.getBoolean(getKey(R.string.unit_inch_mode_key), false);
     }

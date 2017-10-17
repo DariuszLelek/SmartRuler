@@ -5,6 +5,9 @@
     <string name="image_unit">Unit Image</string>
     <string name="image_ruler_type">Ruler Type Image</string>
     <string name="text_measure_result_empty">0.0</string>
+    <string name="text_info"> </string>
+
+    <string name="info_ruler_not_calibrated">Ruler is not calibrated. Go to options and calibrate.</string>
 
     <string name="unit_inch_mode_key">inchMode</string>
 
