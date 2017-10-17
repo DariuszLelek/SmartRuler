@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,11 +31,13 @@ public class RulerActivity extends AppCompatActivity {
 
         resources = getResources();
         SharedPreferences prefs = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
 
         imageRuler = (ImageView) findViewById(R.id.image_ruler);
         imageInfo = (ImageView) findViewById(R.id.image_info);
         textMeasureResult = (TextView) findViewById(R.id.text_measure_result);
-        rulerData = new RulerData(resources, prefs);
+        rulerData = new RulerData(resources, prefs, metrics);
 
         refreshImageUnitImage();
         showInfoScreen();

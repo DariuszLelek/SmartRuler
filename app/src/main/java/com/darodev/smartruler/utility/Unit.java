@@ -6,13 +6,19 @@ package com.darodev.smartruler.utility;
  */
 
 public enum Unit {
-    INCH("inch"),
-    CM("cm");
+    INCH("inch", 5),
+    CM("cm", 2);
 
     private String value;
+    private int offset;
 
-    Unit(String value) {
+    Unit(String value, int offset) {
         this.value = value;
+        this.offset = offset;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
     @Override

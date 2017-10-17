@@ -12,6 +12,9 @@
     <string name="phone_set_edge_left_key">phoneEdgeLeftSet</string>
     <string name="phone_set_screen_key">phoneScreenSet</string>
 
+    <string name="ruler_calibrated_key">rulerCalibrated</string>
+    <string name="pixels_to_left_edge_key">pixelsToLeft</string>
+    <string name="pixels_to_right_edge_key">pixelsToRight</string>
 
     <array name="save_slot_keys">
         <item>slot1</item>
