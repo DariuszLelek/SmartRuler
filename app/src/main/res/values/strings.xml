@@ -4,6 +4,8 @@
     <string name="image_options">Options Image</string>
     <string name="image_unit">Unit Image</string>
     <string name="image_ruler_type">Ruler Type Image</string>
+    <string name="image_shadow_left">Shadow Left Image</string>
+    <string name="image_shadow_right">Shadow Right Image</string>
     <string name="text_measure_result_empty">0.0</string>
     <string name="text_info"> </string>
 
