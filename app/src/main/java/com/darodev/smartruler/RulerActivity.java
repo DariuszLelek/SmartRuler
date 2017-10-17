@@ -25,7 +25,7 @@ public class RulerActivity extends AppCompatActivity {
     private Resources resources;
     private RulerBitmapProvider rulerBitmapProvider;
     private Ruler currentRuler;
-    private ImageView imageUnit, imageRulerButton;
+    private ImageView imageUnit, imageRulerButton, imageShadowL, imageShadowR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +47,15 @@ public class RulerActivity extends AppCompatActivity {
         imageUnit = (ImageView) findViewById(R.id.image_unit);
         imageRulerButton = (ImageView) findViewById(R.id.image_ruler_button);
         imageInfo = (ImageView) findViewById(R.id.image_info);
+        imageShadowL = (ImageView) findViewById(R.id.image_shadow_left);
+        imageShadowR = (ImageView) findViewById(R.id.image_shadow_right);
         textMeasureResult = (TextView) findViewById(R.id.text_measure_result);
         rulerData = new RulerData(resources, prefs, metrics);
         currentRuler = rulerData.getCurrentRuler();
 
         refreshImageRulerType();
         refreshImageUnitImage();
+        refreshRulerShadow();
         showInfoScreen();
         refreshSavedData();
 
@@ -149,6 +152,7 @@ public class RulerActivity extends AppCompatActivity {
                 rulerData.setCurrentRuler(currentRuler);
                 refreshRulerBitmap();
                 refreshImageRulerType();
+                refreshRulerShadow();
                 break;
             }
         }
@@ -167,6 +171,19 @@ public class RulerActivity extends AppCompatActivity {
             return R.drawable.phone_center;
         }else
             return currentRuler == Ruler.LEFT_PHONE_EDGE ? R.drawable.phone_left : R.drawable.phone_right;
+    }
+
+    private void refreshRulerShadow(){
+        if(currentRuler == Ruler.SCREEN){
+            imageShadowL.setVisibility(View.INVISIBLE);
+            imageShadowR.setVisibility(View.INVISIBLE);
+        }else if (currentRuler == Ruler.LEFT_PHONE_EDGE){
+            imageShadowL.setVisibility(View.VISIBLE);
+            imageShadowR.setVisibility(View.INVISIBLE);
+        }else if (currentRuler == Ruler.RIGHT_PHONE_EDGE){
+            imageShadowL.setVisibility(View.INVISIBLE);
+            imageShadowR.setVisibility(View.VISIBLE);
+        }
     }
 
     private void refreshImageUnitImage(){

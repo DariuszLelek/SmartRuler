@@ -78,7 +78,7 @@ public class RulerBitmapProvider {
         LineStepLevelHolder lineStepLevelHolder = getLineStepLevelHolder(unit);
 
         if(type.isFromLeft()){
-            drawRulerLinesFromLeft(canvas, startPoint, lineStepLevelHolder);
+            drawRulerFromLeft(canvas, startPoint, lineStepLevelHolder);
         }else{
             drawRulerLinesFromRight(canvas, startPoint, lineStepLevelHolder);
         }
@@ -108,6 +108,7 @@ public class RulerBitmapProvider {
     // TODO rewrite this to draw from right
     private void drawRulerLinesFromRight(Canvas canvas, int startPoint, LineStepLevelHolder lineStepLevelHolder) {
         int canvasWidth = canvas.getWidth();
+        int counter = 0;
 
         for (int x = startPoint; x <= canvasWidth; x ++) {
             int level = lineStepLevelHolder.getLevelByStep(x - startPoint);
@@ -115,12 +116,20 @@ public class RulerBitmapProvider {
 
             if (lineHeight > 0 && x >= 0) {
                 canvas.drawLine(x, 0, x, lineHeight, getPaintByLevel(level));
+                if(level == 0 && counter > 0){
+                    canvas.drawText(String.valueOf(counter), x, lineHeight + lineHeight/3, PaintProvider.getTextPaint());
+                }
+            }
+
+            if(level == 0){
+                counter ++;
             }
         }
     }
 
-    private void drawRulerLinesFromLeft(Canvas canvas, int startPoint, LineStepLevelHolder lineStepLevelHolder) {
+    private void drawRulerFromLeft(Canvas canvas, int startPoint, LineStepLevelHolder lineStepLevelHolder) {
         int canvasWidth = canvas.getWidth();
+        int counter = 0;
 
         for (int x = startPoint; x <= canvasWidth; x ++) {
             int level = lineStepLevelHolder.getLevelByStep(x - startPoint);
@@ -128,6 +137,13 @@ public class RulerBitmapProvider {
 
             if (lineHeight > 0 && x >= 0) {
                 canvas.drawLine(x, 0, x, lineHeight, getPaintByLevel(level));
+                if(level == 0 && counter > 0){
+                    canvas.drawText(String.valueOf(counter), x, lineHeight + lineHeight/3, PaintProvider.getTextPaint());
+                }
+            }
+
+            if(level == 0){
+                counter ++;
             }
         }
     }

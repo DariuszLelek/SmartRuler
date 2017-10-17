@@ -15,13 +15,11 @@
         android:background="@color/layout_ruler_app_background"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/layout_ruler"
+        <FrameLayout
+            android:id="@+id/layout_header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="top|start"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/image_ruler"
@@ -30,7 +28,31 @@
                 android:contentDescription="@string/image_ruler"
                 app:srcCompat="@color/layout_image_ruler_background"/>
 
-        </LinearLayout>
+            <FrameLayout
+                android:id="@+id/layout_ruler_hud"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/image_shadow_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:adjustViewBounds="true"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/shadow_left_black"/>
+
+                <ImageView
+                    android:id="@+id/image_shadow_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:adjustViewBounds="true"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/shadow_right_black"/>
+
+            </FrameLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/layout_content"
