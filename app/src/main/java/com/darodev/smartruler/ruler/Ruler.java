@@ -16,4 +16,10 @@ public enum Ruler {
         }
         return SCREEN;
     }
+
+    public static Ruler getNextRuler(Ruler ruler){
+        if(ruler == SCREEN){
+            return LEFT_PHONE_EDGE;
+        }else return ruler == LEFT_PHONE_EDGE ? RIGHT_PHONE_EDGE : SCREEN;
+    }
 }

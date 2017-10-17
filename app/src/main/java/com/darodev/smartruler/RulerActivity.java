@@ -24,7 +24,7 @@ public class RulerActivity extends AppCompatActivity {
     private TextView textMeasureResult;
     private Resources resources;
     private RulerBitmapProvider rulerBitmapProvider;
-    private Ruler currentRuler;
+    private Ruler currentRuler, previousRuler;
     private ImageView imageUnit, imageRulerButton, imageShadowL, imageShadowR;
 
     @Override
@@ -39,7 +39,8 @@ public class RulerActivity extends AppCompatActivity {
 
 
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(resources.getString(R.string.pixels_to_left_edge_key), -300);
+        editor.putInt(resources.getString(R.string.pixels_to_left_edge_key), 300);
+        editor.putInt(resources.getString(R.string.pixels_to_right_edge_key), 300);
         editor.apply();
 
 
@@ -146,8 +147,12 @@ public class RulerActivity extends AppCompatActivity {
     }
 
     public void clickRulerType(View view){
-        for(Ruler ruler : Ruler.values()){
-            if(ruler != currentRuler && rulerData.isRulerSet(ruler)){
+        int rulersNum = Ruler.values().length - 1;
+        Ruler ruler;
+
+        while(rulersNum > 0){
+            ruler = Ruler.getNextRuler(currentRuler);
+            if(rulerData.isRulerSet(ruler)){
                 currentRuler = ruler;
                 rulerData.setCurrentRuler(currentRuler);
                 refreshRulerBitmap();
@@ -155,7 +160,20 @@ public class RulerActivity extends AppCompatActivity {
                 refreshRulerShadow();
                 break;
             }
+            rulersNum --;
         }
+//
+//
+//        for(Ruler ruler : Ruler.values()){
+//            if(ruler != currentRuler && rulerData.isRulerSet(ruler)){
+//                currentRuler = ruler;
+//                rulerData.setCurrentRuler(currentRuler);
+//                refreshRulerBitmap();
+//                refreshImageRulerType();
+//                refreshRulerShadow();
+//                break;
+//            }
+//        }
     }
 
     public void clickExit(View view){

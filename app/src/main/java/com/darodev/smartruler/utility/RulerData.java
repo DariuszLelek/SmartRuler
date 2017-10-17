@@ -35,9 +35,9 @@ public class RulerData {
 
     public boolean isRulerSet(Ruler ruler) {
         if (ruler == Ruler.LEFT_PHONE_EDGE) {
-            return preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 0) < 0;
+            return preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 0) > 0;
         } else
-            return ruler != Ruler.RIGHT_PHONE_EDGE || preferences.getInt(getKey(R.string.pixels_to_right_edge_key), 0) < 0;
+            return ruler != Ruler.RIGHT_PHONE_EDGE || preferences.getInt(getKey(R.string.pixels_to_right_edge_key), 0) > 0;
     }
 
     public void swapInchMode() {
@@ -71,9 +71,9 @@ public class RulerData {
         if (startPoint == Ruler.SCREEN) {
             return getPixelsIn(type.getUnit()) / getOffsetDivider(type.getUnit());
         } else if (startPoint == Ruler.LEFT_PHONE_EDGE) {
-            return preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 300);
+            return -preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 300);
         } else if (startPoint == Ruler.RIGHT_PHONE_EDGE) {
-            return preferences.getInt(getKey(R.string.pixels_to_right_edge_key), 0);
+            return preferences.getInt(getKey(R.string.pixels_to_right_edge_key), 300);
         } else {
             return 0;
         }

@@ -23,6 +23,10 @@ import static com.darodev.smartruler.utility.Unit.CM;
 
 public class RulerBitmapProvider {
     private static final int numberOfDiffHeightLines = 5;
+    private static final int textPositionHeightDivider = 3;
+    private static final int unitFullWidth = 3;
+    private static final int unitFractionWidth = 2;
+
     private final TreeMap<Integer, Integer> lineHeightByLevel = new TreeMap<>();
     private final Map<RulerType, Bitmap> bitmapByRulerType = new HashMap<>();
 
@@ -105,20 +109,16 @@ public class RulerBitmapProvider {
         }
     }
 
-    // TODO rewrite this to draw from right
     private void drawRulerLinesFromRight(Canvas canvas, int startPoint, LineStepLevelHolder lineStepLevelHolder) {
         int canvasWidth = canvas.getWidth();
         int counter = 0;
 
-        for (int x = startPoint; x <= canvasWidth; x ++) {
-            int level = lineStepLevelHolder.getLevelByStep(x - startPoint);
+        for (int x = canvasWidth + startPoint; x >= 0; x --) {
+            int level = lineStepLevelHolder.getLevelByStep(Math.abs(x - startPoint - canvasWidth));
             int lineHeight = getLineHeightByLevel(level);
 
-            if (lineHeight > 0 && x >= 0) {
-                canvas.drawLine(x, 0, x, lineHeight, getPaintByLevel(level));
-                if(level == 0 && counter > 0){
-                    canvas.drawText(String.valueOf(counter), x, lineHeight + lineHeight/3, PaintProvider.getTextPaint());
-                }
+            if (lineHeight > 0 && x <= canvasWidth) {
+                drawRulerFragment(canvas, level, counter, lineHeight, x);
             }
 
             if(level == 0){
@@ -127,6 +127,7 @@ public class RulerBitmapProvider {
         }
     }
 
+    // TODO refactor
     private void drawRulerFromLeft(Canvas canvas, int startPoint, LineStepLevelHolder lineStepLevelHolder) {
         int canvasWidth = canvas.getWidth();
         int counter = 0;
@@ -136,10 +137,7 @@ public class RulerBitmapProvider {
             int lineHeight = getLineHeightByLevel(level);
 
             if (lineHeight > 0 && x >= 0) {
-                canvas.drawLine(x, 0, x, lineHeight, getPaintByLevel(level));
-                if(level == 0 && counter > 0){
-                    canvas.drawText(String.valueOf(counter), x, lineHeight + lineHeight/3, PaintProvider.getTextPaint());
-                }
+                drawRulerFragment(canvas, level, counter, lineHeight, x);
             }
 
             if(level == 0){
@@ -148,8 +146,16 @@ public class RulerBitmapProvider {
         }
     }
 
+    private void drawRulerFragment(Canvas canvas, int level, int counter, int lineHeight, int x){
+        canvas.drawLine(x, 0, x, lineHeight, getPaintByLevel(level));
+        if(level == 0 && counter > 0){
+            int textY = lineHeight + lineHeight/textPositionHeightDivider;
+            canvas.drawText(String.valueOf(counter), x, textY, PaintProvider.getTextPaint());
+        }
+    }
+
     private Paint getPaintByLevel(int level) {
-        return level == 0 ? PaintProvider.getBlackPaint(3) : PaintProvider.getBlackPaint(2);
+        return level == 0 ? PaintProvider.getBlackPaint(unitFullWidth) : PaintProvider.getBlackPaint(unitFractionWidth);
     }
 
     private int getLineHeightByLevel(int level) {
