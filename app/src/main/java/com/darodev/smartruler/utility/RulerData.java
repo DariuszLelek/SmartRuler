@@ -6,12 +6,15 @@ import android.util.DisplayMetrics;
 
 import com.darodev.smartruler.R;
 import com.darodev.smartruler.ruler.Ruler;
+import com.darodev.smartruler.ruler.RulerBitmapProvider;
 import com.darodev.smartruler.ruler.RulerType;
+import com.darodev.smartruler.ruler.line.LineStepLevelHolder;
 
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static android.R.attr.type;
 import static java.lang.Long.parseLong;
 
 /**
@@ -25,6 +28,7 @@ public class RulerData {
     private final DisplayMetrics metrics;
 
     private final Map<Integer, String> cachedKeys = new ConcurrentHashMap<>();
+    private final Map<Unit, Integer> resultDividerCache = new ConcurrentHashMap<>();
 
     public RulerData(Resources resources, SharedPreferences preferences, DisplayMetrics metrics) {
         this.resources = resources;
@@ -76,7 +80,7 @@ public class RulerData {
     public int getRulerStartPoint(RulerType type) {
         Ruler startPoint = type.getRuler();
         if (startPoint == Ruler.SCREEN) {
-            return getPixelsIn(type.getUnit()) / getOffsetDivider(type.getUnit());
+            return getScreenOffset(type.getUnit());
         } else if (startPoint == Ruler.LEFT_PHONE_EDGE) {
             return -preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 300);
         } else if (startPoint == Ruler.RIGHT_PHONE_EDGE) {
@@ -86,15 +90,40 @@ public class RulerData {
         }
     }
 
-    public String getMeasureResult(float pointX, Ruler ruler){
-        int pixelsInCm = getPixelsIn(Unit.CM);
-        // TODO fix for RulerType
-        float result = (pointX)/pixelsInCm;
-        return String.format(Locale.ENGLISH, "%.2f", result);
+    public String getMeasureResult(int pointX, Ruler ruler, RulerBitmapProvider ruleBitmapProvider){
+        final Unit unit = getUnit();
+        final float resultDivider = getResultDivider(unit, ruleBitmapProvider.getLineStepLevelHolder(unit));
+        int startPoint = getRulerStartPoint(RulerType.getType(unit, ruler));
+
+        if(ruler == Ruler.SCREEN){
+            return getStringResult((pointX - startPoint) / resultDivider);
+        }else if (ruler == Ruler.LEFT_PHONE_EDGE){
+            return getStringResult((pointX - startPoint) / resultDivider);
+        }else if (ruler == Ruler.RIGHT_PHONE_EDGE){
+            int width = ruleBitmapProvider.getRulerBitmapWidth();
+            return getStringResult(((width - pointX) + startPoint) / resultDivider);
+        }else{
+            return getStringResult(0);
+        }
+    }
+
+    private String getStringResult(float result){
+        return String.format(Locale.ENGLISH, "%.2f", Math.max(result, 0));
     }
 
     public int getPixelsIn(Unit unit) {
         return unit == Unit.CM ? Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue()) : Math.round(metrics.xdpi);
+    }
+
+    private float getResultDivider(Unit unit, LineStepLevelHolder ls){
+        if(!resultDividerCache.containsKey(unit)){
+            resultDividerCache.put(unit, ls.getSmallestStep() * ls.getSmallestStepMultiplier());
+        }
+        return resultDividerCache.get(unit);
+    }
+
+    private int getScreenOffset(Unit unit){
+        return getPixelsIn(unit) / getOffsetDivider(unit);
     }
 
     private int getOffsetDivider(Unit unit) {
