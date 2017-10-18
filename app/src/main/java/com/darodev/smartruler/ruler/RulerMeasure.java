@@ -35,16 +35,16 @@ public class RulerMeasure {
         lastMeasureTime = DateTime.now();
     }
 
-    public boolean canDrawNewMeasure(DateTime time){
+    public boolean canDrawNewMeasure(DateTime time) {
         return lastMeasureTime.plusMillis(measureDelayMS).isBefore(time);
     }
 
-    public void setLastMeasureTime(){
+    public void setLastMeasureTime() {
         lastMeasureTime = DateTime.now();
     }
 
-    public Bitmap getMeasureBitmap(int pointX, Ruler ruler){
-        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight,  Bitmap.Config.ARGB_4444);
+    public Bitmap getMeasureBitmap(int pointX, Ruler ruler) {
+        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(bitmap);
 
         drawMeasureField(canvas, pointX, ruler);
@@ -54,25 +54,34 @@ public class RulerMeasure {
         return bitmap;
     }
 
-    private void drawMeasureStart(Canvas canvas, Ruler ruler){
-        if(ruler == Ruler.SCREEN){
+    private void drawMeasureStart(Canvas canvas, Ruler ruler) {
+        if (ruler == Ruler.SCREEN) {
             int color = ContextCompat.getColor(context, R.color.measure_start);
             drawLine(canvas, rulerData.getScreenOffset(), PaintProvider.getColorPaint(5, color));
         }
     }
 
-    private void drawMeasureField(Canvas canvas, int measureX, Ruler ruler){
-        int startX = ruler == Ruler.SCREEN ? rulerData.getScreenOffset() : 0;
+    private void drawMeasureField(Canvas canvas, int measureX, Ruler ruler) {
         int color = ContextCompat.getColor(context, R.color.measure_field);
-        canvas.drawRect(startX, 0, measureX, bitmapHeight/4, PaintProvider.getColorPaint(5, color));
+        canvas.drawRect(getFieldStartX(ruler), 0, measureX, bitmapHeight / 4, PaintProvider.getColorPaint(5, color));
     }
 
-    private void drawMeasureEnd(Canvas canvas, int measureX){
+    private void drawMeasureEnd(Canvas canvas, int measureX) {
         int color = ContextCompat.getColor(context, R.color.measure_end);
         drawLine(canvas, measureX, PaintProvider.getColorPaint(5, color));
     }
 
-    private void drawLine(Canvas canvas, int x, Paint paint){
+    private void drawLine(Canvas canvas, int x, Paint paint) {
         canvas.drawLine(x, 0, x, bitmapHeight, paint);
+    }
+
+    private int getFieldStartX(Ruler ruler) {
+        if (ruler == Ruler.SCREEN) {
+            return rulerData.getScreenOffset();
+        } else if (ruler == Ruler.RIGHT_PHONE_EDGE) {
+            return bitmapWidth;
+        } else {
+            return 0;
+        }
     }
 }

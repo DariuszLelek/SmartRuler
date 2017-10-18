@@ -204,10 +204,6 @@ public class RulerActivity extends AppCompatActivity {
         }
     }
 
-    public void clickExit(View view){
-        finish();
-    }
-
     private void resetMeasureResult(){
         textMeasureResult.setText(resources.getString(R.string.text_measure_result_empty));
     }

@@ -10,11 +10,8 @@ import com.darodev.smartruler.ruler.RulerBitmapProvider;
 import com.darodev.smartruler.ruler.RulerType;
 import com.darodev.smartruler.ruler.line.LineStepLevelHolder;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static java.lang.Long.parseLong;
 
 /**
  * Created by Dariusz Lelek on 10/15/2017.

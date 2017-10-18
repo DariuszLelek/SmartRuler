@@ -1,7 +1,5 @@
 package com.darodev.smartruler.utility;
 
-import static android.R.attr.offset;
-
 /**
  * Created by Dariusz Lelek on 10/15/2017.
  * dariusz.lelek@gmail.com
