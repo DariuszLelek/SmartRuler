@@ -36,4 +36,7 @@
     <string name="app_name_display">Smart Ruler</string>
 
     <string name="empty_text_placeholder">EMPTY</string>
+    <string name="last_measure">last</string>
+    <string name="label_show_last_measure">show</string>
+    <string name="label_close">close</string>
 </resources>

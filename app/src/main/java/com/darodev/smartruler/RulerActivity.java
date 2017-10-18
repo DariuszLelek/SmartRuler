@@ -21,6 +21,8 @@ import com.darodev.smartruler.utility.Unit;
 
 import org.joda.time.DateTime;
 
+import java.util.Locale;
+
 public class RulerActivity extends AppCompatActivity {
     private RulerData rulerData;
     private RulerMeasure rulerMeasure;
@@ -48,7 +50,6 @@ public class RulerActivity extends AppCompatActivity {
         editor.putInt(resources.getString(R.string.pixels_to_right_edge_key), 300);
         editor.apply();
 
-
         imageRuler = (ImageView) findViewById(R.id.image_ruler);
         imageUnit = (ImageView) findViewById(R.id.image_unit);
         imageRulerButton = (ImageView) findViewById(R.id.image_ruler_button);
@@ -69,6 +70,7 @@ public class RulerActivity extends AppCompatActivity {
         refreshTextInfo();
         refreshSavedData();
 
+//        prepareLabelShowLastMeasure();
         prepareImageRulerBitmap();
         prepareImageRulerListener();
     }
@@ -119,6 +121,21 @@ public class RulerActivity extends AppCompatActivity {
         refreshSavedData();
     }
 
+//    private void prepareLabelShowLastMeasure(){
+//        TextView lastMeasureView = (TextView) findViewById(R.id.label_show_last_measure);
+//        lastMeasureView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                double lastMeasure = rulerData.getLastMeasure();
+//                if(lastMeasure > 0){
+//                    imageRuler.setImageBitmap(rulerMeasure.getLastMeasureBitmap(rulerData.getLastMeasureX(), currentRuler));
+//                    double result = rulerData.getLastMeasure();
+//                    textMeasureResult.setText();
+//                }
+//            }
+//        });
+//    }
+
     private void prepareImageRulerListener(){
         imageRuler.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -129,13 +146,18 @@ public class RulerActivity extends AppCompatActivity {
                         rulerMeasure.setLastMeasureTime();
                         int pointX = Math.round(event.getX());
                         imageRuler.setImageBitmap(rulerMeasure.getMeasureBitmap(pointX, currentRuler));
-                        textMeasureResult.setText(rulerData.getMeasureResult(pointX, currentRuler, rulerBitmapProvider));
+                        float result = rulerData.getMeasureResult(pointX, currentRuler, rulerBitmapProvider);
+                        textMeasureResult.setText(getFormattedResult(result));
                     }
                     return true;
                 }
                 return false;
             }
         });
+    }
+
+    private String getFormattedResult(float result){
+        return String.format(Locale.ENGLISH, "%.2f", Math.max(result, 0));
     }
 
     private void prepareImageRulerBitmap(){

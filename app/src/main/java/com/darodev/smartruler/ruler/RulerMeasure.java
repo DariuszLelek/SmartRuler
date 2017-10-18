@@ -43,6 +43,15 @@ public class RulerMeasure {
         lastMeasureTime = DateTime.now();
     }
 
+    public Bitmap getLastMeasureBitmap(int lastMeasureX, Ruler ruler){
+        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight,  Bitmap.Config.ARGB_4444);
+        Canvas canvas = new Canvas(bitmap);
+
+        drawLastMeasureField(canvas, lastMeasureX, ruler);
+
+        return bitmap;
+    }
+
     public Bitmap getMeasureBitmap(int pointX, Ruler ruler){
         Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight,  Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(bitmap);
@@ -52,6 +61,13 @@ public class RulerMeasure {
         drawMeasureEnd(canvas, pointX);
 
         return bitmap;
+    }
+
+
+    private void drawLastMeasureField(Canvas canvas, int measureX, Ruler ruler){
+        int startX = ruler == Ruler.SCREEN ? rulerData.getScreenOffset() : 0;
+        int color = ContextCompat.getColor(context, R.color.last_measure_field);
+        canvas.drawRect(startX, 0, measureX, bitmapHeight/4, PaintProvider.getColorPaint(5, color));
     }
 
     private void drawMeasureStart(Canvas canvas, Ruler ruler){
