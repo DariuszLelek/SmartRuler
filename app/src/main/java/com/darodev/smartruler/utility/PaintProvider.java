@@ -13,15 +13,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PaintProvider {
     private static final Map<Integer, Paint> blackPaints = new ConcurrentHashMap<>();
+    private static final Map<Integer, Paint> colorPaints = new ConcurrentHashMap<>();
     private static final Paint textPaint = getNewTextPaint();
 
     public static Paint getBlackPaint(int strokeWidth){
         if(!blackPaints.containsKey(strokeWidth)){
-            blackPaints.put(strokeWidth, getNewBlackPaint(strokeWidth));
+            blackPaints.put(strokeWidth, getNewPaint(strokeWidth, Color.BLACK));
         }
         return blackPaints.get(strokeWidth);
     }
 
+    public static Paint getColorPaint(int strokeWidth, int color){
+        if(!colorPaints.containsKey(strokeWidth)){
+            colorPaints.put(strokeWidth, getNewPaint(strokeWidth, color));
+        }
+        return colorPaints.get(strokeWidth);
+    }
 
     public static Paint getTextPaint(){
         return textPaint;
@@ -36,11 +43,11 @@ public class PaintProvider {
         return paint;
     }
 
-    private static Paint getNewBlackPaint(int strokeWidth){
+    private static Paint getNewPaint(int strokeWidth, int color){
         Paint paint = new Paint();
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeWidth(strokeWidth);
-        paint.setColor(Color.BLACK);
+        paint.setColor(color);
         return paint;
     }
 

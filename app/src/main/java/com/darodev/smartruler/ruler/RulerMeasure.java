@@ -2,6 +2,7 @@ package com.darodev.smartruler.ruler;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.darodev.smartruler.utility.PaintProvider;
@@ -9,7 +10,7 @@ import com.darodev.smartruler.utility.RulerData;
 
 import org.joda.time.DateTime;
 
-import static android.R.attr.src;
+import static android.R.attr.bitmap;
 
 /**
  * Created by Dariusz Lelek on 10/17/2017.
@@ -19,22 +20,16 @@ import static android.R.attr.src;
 public class RulerMeasure {
     private static final int measureDelayMS = 50;
 
-    private final Bitmap originalBitmap;
     private final RulerData rulerData;
-    private final int bitmapHeight, bitmapWidth, bitmapH;
-
+    private final int bitmapHeight, bitmapWidth;
 
     private DateTime lastMeasureTime;
-    private int lastMeasureX;
 
     public RulerMeasure(Bitmap bitmap, RulerData rulerData) {
-        this.originalBitmap = bitmap;
         this.rulerData = rulerData;
         this.bitmapHeight = bitmap.getHeight();
-        this.bitmapWidth = originalBitmap.getWidth();
-        this.bitmapH = originalBitmap.getHeight();
+        this.bitmapWidth = bitmap.getWidth();
 
-        //bitmapWithMeasure = getMeasureBitmap(0);
         lastMeasureTime = DateTime.now();
     }
 
@@ -42,23 +37,31 @@ public class RulerMeasure {
         return lastMeasureTime.plusMillis(measureDelayMS).isBefore(time);
     }
 
-    public Bitmap getMeasureBitmap(int pointX){
-        Bitmap bitmap;
-
-        lastMeasureX = pointX;
+    public void setLastMeasureTime(){
         lastMeasureTime = DateTime.now();
+    }
 
-        bitmap = Bitmap.createBitmap(bitmapWidth, bitmapH,  Bitmap.Config.ARGB_4444);
-        drawMeasure(bitmap);
+    public Bitmap getMeasureBitmap(int pointX, Ruler ruler){
+        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight,  Bitmap.Config.ARGB_4444);
+        Canvas canvas = new Canvas(bitmap);
+
+        drawMeasureLine(canvas, pointX);
+
 
         return bitmap;
     }
 
-    private void drawMeasure(Bitmap bitmap){
-        Canvas canvas = new Canvas(bitmap);
-//        Paint paint = new Paint();
-//        paint.setAlpha(0);
-//        canvas.drawBitmap(bitmap, 0, 0, paint);
-        canvas.drawLine(lastMeasureX, 0, lastMeasureX, bitmapHeight, PaintProvider.getBlackPaint(4));
+    private void drawMeasureStartLine(Canvas canvas, Ruler ruler){
+        if(ruler == Ruler.SCREEN){
+            //drawLine(canvas, rulerData.getRulerStartPoint(RulerType.CM_SCREEN))
+        }
+    }
+
+    private void drawMeasureLine(Canvas canvas, int measureX){
+        drawLine(canvas, measureX, PaintProvider.getColorPaint(5, Color.GREEN));
+    }
+
+    private void drawLine(Canvas canvas, int x, Paint paint){
+        canvas.drawLine(x, 0, x, bitmapHeight, paint);
     }
 }

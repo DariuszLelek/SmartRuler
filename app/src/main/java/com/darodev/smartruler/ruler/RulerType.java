@@ -50,4 +50,13 @@ public enum RulerType {
         }
         return CM_SCREEN;
     }
+
+    public static RulerType getByString(String string){
+        for(RulerType rulerType : values()){
+            if(rulerType.name().equalsIgnoreCase(string)){
+                return rulerType;
+            }
+        }
+        return CM_SCREEN;
+    }
 }

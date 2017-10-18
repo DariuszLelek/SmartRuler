@@ -140,6 +140,7 @@ public class RulerData {
         return Ruler.getByString(preferences.getString(getKey(R.string.current_ruler_key), "SCREEN"));
     }
 
+
     private Unit getUnit() {
         return isInInchMode() ? Unit.INCH : Unit.CM;
     }

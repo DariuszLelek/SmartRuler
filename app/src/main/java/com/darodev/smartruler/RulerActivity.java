@@ -126,8 +126,9 @@ public class RulerActivity extends AppCompatActivity {
                 int action = event.getAction();
                 if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE){
                     if(rulerMeasure != null && rulerMeasure.canDrawNewMeasure(DateTime.now())){
+                        rulerMeasure.setLastMeasureTime();
                         int pointX = Math.round(event.getX());
-                        imageRuler.setImageBitmap(rulerMeasure.getMeasureBitmap(pointX));
+                        imageRuler.setImageBitmap(rulerMeasure.getMeasureBitmap(pointX, currentRuler));
                         textMeasureResult.setText(rulerData.getMeasureResult(pointX, currentRuler, rulerBitmapProvider));
                     }
                     return true;

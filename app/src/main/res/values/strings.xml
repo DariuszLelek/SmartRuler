@@ -21,6 +21,7 @@
     <string name="pixels_to_left_edge_key">pixelsToLeft</string>
     <string name="pixels_to_right_edge_key">pixelsToRight</string>
 
+    <string name="current_ruler_type_key">currentRulerType</string>
     <string name="current_ruler_key">currentRuler</string>
 
     <array name="save_slot_keys">
