@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PaintProvider {
     private static final Map<Integer, Paint> blackPaints = new ConcurrentHashMap<>();
-    private static final Map<Integer, Paint> colorPaints = new ConcurrentHashMap<>();
+    private static final Map<ColorWidth, Paint> colorPaints = new ConcurrentHashMap<>();
     private static final Paint textPaint = getNewTextPaint();
 
     public static Paint getBlackPaint(int strokeWidth){
@@ -24,10 +24,11 @@ public class PaintProvider {
     }
 
     public static Paint getColorPaint(int strokeWidth, int color){
-        if(!colorPaints.containsKey(strokeWidth)){
-            colorPaints.put(strokeWidth, getNewPaint(strokeWidth, color));
+        ColorWidth key = new ColorWidth(color, strokeWidth);
+        if(!colorPaints.containsKey(key)){
+            colorPaints.put(key, getNewPaint(strokeWidth, color));
         }
-        return colorPaints.get(strokeWidth);
+        return colorPaints.get(key);
     }
 
     public static Paint getTextPaint(){
@@ -49,6 +50,34 @@ public class PaintProvider {
         paint.setStrokeWidth(strokeWidth);
         paint.setColor(color);
         return paint;
+    }
+
+    private static class ColorWidth{
+        private int color;
+        private int width;
+
+        ColorWidth(int color, int width) {
+            this.color = color;
+            this.width = width;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ColorWidth that = (ColorWidth) o;
+
+            return color == that.color && width == that.width;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = color;
+            result = 31 * result + width;
+            return result;
+        }
     }
 
 }

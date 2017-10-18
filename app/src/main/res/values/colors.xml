@@ -11,6 +11,10 @@
     <color name="layout_image_ruler_background">#ffffff</color>
     <color name="layout_content_result_background">#687a66</color>
 
+    <color name="measure_field">#501cff03</color>
+    <color name="measure_start">#1cff03</color>
+    <color name="measure_end">#1cff03</color>
+
     <color name="save_1">#000000</color>
     <color name="save_2">#1e1e1e</color>
     <color name="save_3">#3c3c3c</color>

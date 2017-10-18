@@ -1,16 +1,16 @@
 package com.darodev.smartruler.ruler;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 
+import com.darodev.smartruler.R;
 import com.darodev.smartruler.utility.PaintProvider;
 import com.darodev.smartruler.utility.RulerData;
 
 import org.joda.time.DateTime;
-
-import static android.R.attr.bitmap;
 
 /**
  * Created by Dariusz Lelek on 10/17/2017.
@@ -22,11 +22,13 @@ public class RulerMeasure {
 
     private final RulerData rulerData;
     private final int bitmapHeight, bitmapWidth;
+    private final Context context;
 
     private DateTime lastMeasureTime;
 
-    public RulerMeasure(Bitmap bitmap, RulerData rulerData) {
+    public RulerMeasure(Bitmap bitmap, RulerData rulerData, Context context) {
         this.rulerData = rulerData;
+        this.context = context;
         this.bitmapHeight = bitmap.getHeight();
         this.bitmapWidth = bitmap.getWidth();
 
@@ -45,20 +47,29 @@ public class RulerMeasure {
         Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight,  Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(bitmap);
 
-        drawMeasureLine(canvas, pointX);
-
+        drawMeasureField(canvas, pointX, ruler);
+        drawMeasureStart(canvas, ruler);
+        drawMeasureEnd(canvas, pointX);
 
         return bitmap;
     }
 
-    private void drawMeasureStartLine(Canvas canvas, Ruler ruler){
+    private void drawMeasureStart(Canvas canvas, Ruler ruler){
         if(ruler == Ruler.SCREEN){
-            //drawLine(canvas, rulerData.getRulerStartPoint(RulerType.CM_SCREEN))
+            int color = ContextCompat.getColor(context, R.color.measure_start);
+            drawLine(canvas, rulerData.getScreenOffset(), PaintProvider.getColorPaint(5, color));
         }
     }
 
-    private void drawMeasureLine(Canvas canvas, int measureX){
-        drawLine(canvas, measureX, PaintProvider.getColorPaint(5, Color.GREEN));
+    private void drawMeasureField(Canvas canvas, int measureX, Ruler ruler){
+        int startX = ruler == Ruler.SCREEN ? rulerData.getScreenOffset() : 0;
+        int color = ContextCompat.getColor(context, R.color.measure_field);
+        canvas.drawRect(startX, 0, measureX, bitmapHeight/4, PaintProvider.getColorPaint(5, color));
+    }
+
+    private void drawMeasureEnd(Canvas canvas, int measureX){
+        int color = ContextCompat.getColor(context, R.color.measure_end);
+        drawLine(canvas, measureX, PaintProvider.getColorPaint(5, color));
     }
 
     private void drawLine(Canvas canvas, int x, Paint paint){

@@ -153,7 +153,7 @@ public class RulerActivity extends AppCompatActivity {
     }
 
     private void prepareRulerMeasure(Bitmap imageRulerBitmap){
-        rulerMeasure = new RulerMeasure(imageRulerBitmap, rulerData);
+        rulerMeasure = new RulerMeasure(imageRulerBitmap, rulerData, getApplicationContext());
     }
 
     private void prepareRulerBitmapProvider(Bitmap imageRulerBitmap){

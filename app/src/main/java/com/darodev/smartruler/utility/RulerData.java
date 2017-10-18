@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static android.R.attr.type;
 import static java.lang.Long.parseLong;
 
 /**
@@ -29,6 +28,8 @@ public class RulerData {
 
     private final Map<Integer, String> cachedKeys = new ConcurrentHashMap<>();
     private final Map<Unit, Integer> resultDividerCache = new ConcurrentHashMap<>();
+
+    private int screenOffset = 0;
 
     public RulerData(Resources resources, SharedPreferences preferences, DisplayMetrics metrics) {
         this.resources = resources;
@@ -80,7 +81,7 @@ public class RulerData {
     public int getRulerStartPoint(RulerType type) {
         Ruler startPoint = type.getRuler();
         if (startPoint == Ruler.SCREEN) {
-            return getScreenOffset(type.getUnit());
+            return getScreenOffset();
         } else if (startPoint == Ruler.LEFT_PHONE_EDGE) {
             return -preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 300);
         } else if (startPoint == Ruler.RIGHT_PHONE_EDGE) {
@@ -122,12 +123,11 @@ public class RulerData {
         return resultDividerCache.get(unit);
     }
 
-    private int getScreenOffset(Unit unit){
-        return getPixelsIn(unit) / getOffsetDivider(unit);
-    }
-
-    private int getOffsetDivider(Unit unit) {
-        return unit.getOffset();
+    public int getScreenOffset() {
+        if(screenOffset == 0){
+            screenOffset = getPixelsIn(Unit.CM) / 2;
+        }
+        return screenOffset;
     }
 
     public void setCurrentRuler(Ruler ruler){
