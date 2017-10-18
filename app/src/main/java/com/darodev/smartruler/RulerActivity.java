@@ -70,7 +70,6 @@ public class RulerActivity extends AppCompatActivity {
         refreshTextInfo();
         refreshSavedData();
 
-//        prepareLabelShowLastMeasure();
         prepareImageRulerBitmap();
         prepareImageRulerListener();
     }
@@ -120,21 +119,6 @@ public class RulerActivity extends AppCompatActivity {
         clearMeasure();
         refreshSavedData();
     }
-
-//    private void prepareLabelShowLastMeasure(){
-//        TextView lastMeasureView = (TextView) findViewById(R.id.label_show_last_measure);
-//        lastMeasureView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                double lastMeasure = rulerData.getLastMeasure();
-//                if(lastMeasure > 0){
-//                    imageRuler.setImageBitmap(rulerMeasure.getLastMeasureBitmap(rulerData.getLastMeasureX(), currentRuler));
-//                    double result = rulerData.getLastMeasure();
-//                    textMeasureResult.setText();
-//                }
-//            }
-//        });
-//    }
 
     private void prepareImageRulerListener(){
         imageRuler.setOnTouchListener(new View.OnTouchListener() {

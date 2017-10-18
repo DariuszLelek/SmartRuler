@@ -25,7 +25,6 @@ public class RulerData {
     private final Resources resources;
     private final SharedPreferences preferences;
     private final DisplayMetrics metrics;
-    private final String inchIndicator = "\"";
 
     private final Map<Integer, String> cachedKeys = new ConcurrentHashMap<>();
     private final Map<Unit, Integer> resultDividerCache = new ConcurrentHashMap<>();
@@ -63,7 +62,7 @@ public class RulerData {
         if (validResult(result)) {
             String[] saveData = getSavedData();
             System.arraycopy(saveData, 0, saveData, 1, saveData.length - 1);
-            saveData[0] = result + (getUnit() == Unit.INCH ? inchIndicator : "");
+            saveData[0] = result + (getUnit() == Unit.INCH ? "\"" : "");
             saveData(saveData);
         }
     }
@@ -78,23 +77,6 @@ public class RulerData {
 
         return savedData;
     }
-
-//    public double getLastMeasure(){
-//        String lestResultString = getSavedData()[0];
-//
-//        if (validResult(lestResultString)) {
-//            Unit lastResultUnit = lestResultString.contains(inchIndicator) ? Unit.INCH : Unit.CM;
-//            double lastResult = Double.parseDouble(lestResultString);
-//            if (lastResultUnit == getUnit()) {
-//                return lastResult;
-//            }else{
-//                float cmToInch = Constant.CM_IN_INCH.getValue();
-//                return lastResultUnit == Unit.CM ? lastResult * cmToInch : lastResult / cmToInch;
-//            }
-//        } else {
-//            return 0;
-//        }
-//    }
 
     public int getRulerStartPoint(RulerType type) {
         Ruler startPoint = type.getRuler();
