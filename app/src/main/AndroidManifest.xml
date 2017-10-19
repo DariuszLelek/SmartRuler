@@ -7,13 +7,14 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:fullBackupContent="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RulerActivity"
-                  android:screenOrientation="landscape">
+        <activity
+            android:name=".RulerActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -26,10 +27,14 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:scheme="http"
                     android:host="darodev.com"
-                    android:path="/smartruler"/>
+                    android:path="/smartruler"
+                    android:scheme="http"/>
             </intent-filter>
+        </activity>
+
+        <activity android:name=".CalibrateActivity"
+                  android:screenOrientation="landscape">
         </activity>
     </application>
 

@@ -21,11 +21,13 @@
     <string name="app_name_display">Smart Ruler</string>
     <string name="empty_text_placeholder">EMPTY</string>
     <string name="last_measure">last</string>
-    <string name="btn_done_text">done</string>
-    <string name="btn_cancel_text">cancel</string>
-    <string name="info_calibrate_screen">Place credit card on the phone screen.\nMake sure shorter card edge is inside the green rectangle.\nTap to begin.</string>
-    <string name="info_calibrate_left">Place credit card on the phone.\nAlign left card edge to the left phone edge.\nFor best result place the right phone edge against flat surface.\nTap to begin.</string>
-    <string name="info_calibrate_right">Place credit card on the phone.\nAlign right card edge to the right phone edge.\nFor best result place the right phone edge against flat surface.\nTap to begin.</string>
+    <string name="calibration_result_key">calibrationResult</string>
+    <string name="ruler_key">rulerKey</string>
+    <string name="btn_done_text">Done</string>
+    <string name="btn_cancel_text">Cancel</string>
+    <string name="info_calibrate_screen">Place credit card on the phone screen.\nMake sure shorter that card edge\nis inside the green rectangle.\n\nTap to begin.</string>
+    <string name="info_calibrate_left">Place credit card on the phone.\nAlign left card edge to the left phone edge.\n\nTip for best result:\nPlace phone edge against flat surface.\n\nTap to begin.</string>
+    <string name="info_calibrate_right">Place credit card on the phone.\nAlign right card edge to the right phone edge.\n\nTip for best result:\nPlace phone edge against flat surface.\n\nTap to begin.</string>
 
     <array name="save_slot_keys">
         <item>slot1</item>

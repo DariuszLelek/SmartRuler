@@ -105,6 +105,13 @@ public class RulerData {
         }
     }
 
+    public void saveCalibrationResult(String calibrationResult, Ruler ruler){
+        if(validResult(calibrationResult)){
+            int result = (int) Double.parseDouble(calibrationResult);
+
+        }
+    }
+
     public int getPixelsIn(Unit unit) {
         // TODO get from prefs - if not set get metrics
         return unit == Unit.CM ? Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue()) : Math.round(metrics.xdpi);
@@ -133,7 +140,6 @@ public class RulerData {
     public Ruler getCurrentRuler(){
         return Ruler.getByString(preferences.getString(getKey(R.string.current_ruler_key), "SCREEN"));
     }
-
 
     private Unit getUnit() {
         return isInInchMode() ? Unit.INCH : Unit.CM;

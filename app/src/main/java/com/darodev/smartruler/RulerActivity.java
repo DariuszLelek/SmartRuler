@@ -1,6 +1,7 @@
 package com.darodev.smartruler;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -9,12 +10,8 @@ import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,22 +32,17 @@ import org.joda.time.DateTime;
 
 import java.util.Locale;
 
-import static android.R.attr.button;
-
 public class RulerActivity extends AppCompatActivity {
     private AdView adView;
     private RulerData rulerData;
-    private RulerMeasure rulerScreenMeasure, rulerCalibrateMeasure;
-    private ImageView imageRuler, imageCalibrate;
+    private RulerMeasure rulerMeasure;
+    private ImageView imageRuler;
     private TextView[] textSavedData;
-    private TextView textMeasureResult, textInfo, textInfoCalibrate;
+    private TextView textMeasureResult, textInfo;
     private Resources resources;
     private RulerBitmapProvider rulerBitmapProvider;
     private Ruler currentRuler;
     private ImageView imageUnit, imageRulerButton, imageShadowL, imageShadowR;
-    private int screenMeasurePointX;
-    private Button btnDoneLeft, btnDoneRight;
-    private FrameLayout calibrateScreen;
     private boolean isCalibrateMode;
 
     @Override
@@ -79,11 +71,6 @@ public class RulerActivity extends AppCompatActivity {
         imageShadowR = (ImageView) findViewById(R.id.image_shadow_right);
         textMeasureResult = (TextView) findViewById(R.id.text_measure_result);
         textInfo = (TextView) findViewById(R.id.text_info);
-        textInfoCalibrate = (TextView) findViewById(R.id.text_info_calibrate);
-        imageCalibrate = (ImageView) findViewById(R.id.image_calibrate);
-        calibrateScreen = (FrameLayout) findViewById(R.id.layout_calibrate_screen);
-        btnDoneLeft = (Button) findViewById(R.id.btn_done_left);
-        btnDoneRight = (Button) findViewById(R.id.btn_done_right);
 
         rulerData = new RulerData(resources, prefs, metrics);
         currentRuler = rulerData.getCurrentRuler();
@@ -99,7 +86,6 @@ public class RulerActivity extends AppCompatActivity {
 
         prepareImageRulerBitmap();
         prepareImageRulerListener();
-        prepareCalibrateFeature();
 
         //prepareAds();
     }
@@ -107,42 +93,6 @@ public class RulerActivity extends AppCompatActivity {
     private void prepareAds(){
         LinearLayout add_holder = (LinearLayout) findViewById(R.id.layout_ad);
         add_holder.addView(getAdView());
-    }
-
-    private void prepareCalibrateFeature(){
-        imageCalibrate.post(new Runnable() {
-            @Override
-            public void run() {
-                imageCalibrate.setDrawingCacheEnabled(true);
-                imageCalibrate.buildDrawingCache();
-                Bitmap drawingCacheBitmap = imageCalibrate.getDrawingCache();
-
-                prepareRulerMeasure(MeasureOrigin.CALIBRATION_SCREEN, drawingCacheBitmap);
-            }
-        });
-
-        imageCalibrate.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-
-//                if(action == MotionEvent.ACTION_DOWN){
-//                    showDoneButton().setText(resources.getString(R.string.btn_done_text));
-//                    return false;
-//                }
-
-                if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE){
-                    if(rulerCalibrateMeasure != null && rulerCalibrateMeasure.canDrawNewMeasure(DateTime.now())){
-                        rulerCalibrateMeasure.setLastMeasureTime();
-                        int pointX = Math.round(event.getX());
-                        setMeasureBitmap(imageCalibrate, MeasureOrigin.CALIBRATION_SCREEN, pointX);
-                        screenMeasurePointX = pointX;
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     private AdView getAdView(){
@@ -197,40 +147,9 @@ public class RulerActivity extends AppCompatActivity {
     }
 
     public void clickOptions(View view){
-        isCalibrateMode = true;
-        screenMeasurePointX = 0;
-
-        calibrateScreen.setVisibility(View.VISIBLE);
-        showCalibrateInfo(rulerData.getCurrentRuler());
-        showDoneButton(rulerData.getCurrentRuler());
-    }
-
-    private void showCalibrateInfo(Ruler ruler){
-        if(ruler == Ruler.SCREEN){
-            textInfoCalibrate.setText(resources.getString(R.string.info_calibrate_screen));
-            imageCalibrate.setImageResource(R.drawable.info_screen);
-        }else if(ruler == Ruler.LEFT_PHONE_EDGE){
-            textInfoCalibrate.setText(resources.getString(R.string.info_calibrate_left));
-            imageCalibrate.setImageResource(R.drawable.info_left);
-        }else if(ruler == Ruler.RIGHT_PHONE_EDGE){
-            textInfoCalibrate.setText(resources.getString(R.string.info_calibrate_right));
-            imageCalibrate.setImageResource(R.drawable.info_right);
-        }
-    }
-
-    private void showDoneButton(Ruler ruler){
-        if(ruler == Ruler.RIGHT_PHONE_EDGE){
-            btnDoneLeft.setVisibility(View.VISIBLE);
-            btnDoneRight.setVisibility(View.INVISIBLE);
-        }else{
-            btnDoneLeft.setVisibility(View.INVISIBLE);
-            btnDoneRight.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public void clickDone(View view){
-        isCalibrateMode = false;
-        calibrateScreen.setVisibility(View.INVISIBLE);
+        Intent myIntent = new Intent(this, CalibrateActivity.class);
+        myIntent.putExtra(resources.getString(R.string.ruler_key), rulerData.getCurrentRuler().name());
+        startActivityForResult(myIntent, CalibrateActivity.CALIBRATION_REQUEST_CODE);
     }
 
     public void clickUnit(View view){
@@ -253,8 +172,8 @@ public class RulerActivity extends AppCompatActivity {
                 if(!isCalibrateMode){
                     int action = event.getAction();
                     if(action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE){
-                        if(rulerScreenMeasure != null && rulerScreenMeasure.canDrawNewMeasure(DateTime.now())){
-                            rulerScreenMeasure.setLastMeasureTime();
+                        if(rulerMeasure != null && rulerMeasure.canDrawNewMeasure(DateTime.now())){
+                            rulerMeasure.setLastMeasureTime();
                             int pointX = Math.round(event.getX());
                             setMeasureBitmap(imageRuler, MeasureOrigin.RULER_SCREEN, pointX);
                             setMeasureResult(pointX);
@@ -268,7 +187,6 @@ public class RulerActivity extends AppCompatActivity {
     }
 
     private void setMeasureBitmap(ImageView imageView, MeasureOrigin origin, int pointX){
-        RulerMeasure rulerMeasure = origin == MeasureOrigin.RULER_SCREEN ? rulerScreenMeasure : rulerCalibrateMeasure;
         Bitmap bitmap = rulerMeasure.getMeasureBitmap(origin, pointX, currentRuler);
         imageView.setImageBitmap(bitmap);
     }
@@ -291,17 +209,9 @@ public class RulerActivity extends AppCompatActivity {
                 Bitmap drawingCacheBitmap = imageRuler.getDrawingCache();
 
                 prepareRulerBitmapProvider(drawingCacheBitmap);
-                prepareRulerMeasure(MeasureOrigin.RULER_SCREEN, drawingCacheBitmap);
+                rulerMeasure = new RulerMeasure(drawingCacheBitmap, getApplicationContext(), rulerData.getScreenOffset());
             }
         });
-    }
-
-    private void prepareRulerMeasure(MeasureOrigin origin, Bitmap bitmap){
-        if(origin == MeasureOrigin.RULER_SCREEN){
-            rulerScreenMeasure = new RulerMeasure(bitmap, rulerData, getApplicationContext());
-        }else if(origin == MeasureOrigin.CALIBRATION_SCREEN){
-            rulerCalibrateMeasure = new RulerMeasure(bitmap, rulerData, getApplicationContext());
-        }
     }
 
     private void prepareRulerBitmapProvider(Bitmap imageRulerBitmap){
@@ -344,7 +254,6 @@ public class RulerActivity extends AppCompatActivity {
         if(!rulerData.isScreenRulerCalibrated()){
             textInfo.setText(resources.getString(R.string.info_ruler_not_calibrated));
         }
-
     }
 
     private void refreshImageRulerType(){
@@ -373,5 +282,18 @@ public class RulerActivity extends AppCompatActivity {
 
     private void refreshImageUnitImage(){
         imageUnit.setImageResource(rulerData.isInInchMode() ? R.mipmap.ic_inch : R.mipmap.ic_cm);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CalibrateActivity.CALIBRATION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String calibrationResult = data.getStringExtra(resources.getString(R.string.calibration_result_key));
+
+                if(!calibrationResult.isEmpty()){
+                    rulerData.saveCalibrationResult(calibrationResult, currentRuler);
+                }
+            }
+        }
     }
 }

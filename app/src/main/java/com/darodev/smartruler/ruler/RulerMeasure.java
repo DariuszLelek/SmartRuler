@@ -20,15 +20,15 @@ import org.joda.time.DateTime;
 public class RulerMeasure {
     private static final int measureDelayMS = 50;
 
-    private final RulerData rulerData;
-    private final int bitmapHeight, bitmapWidth;
+    private final int bitmapHeight, bitmapWidth, screenOffset;
     private final Context context;
 
     private DateTime lastMeasureTime;
 
-    public RulerMeasure(Bitmap bitmap, RulerData rulerData, Context context) {
-        this.rulerData = rulerData;
+    public RulerMeasure(Bitmap bitmap, Context context, int screenOffset) {
         this.context = context;
+
+        this.screenOffset = screenOffset;
         this.bitmapHeight = bitmap.getHeight();
         this.bitmapWidth = bitmap.getWidth();
 
@@ -58,7 +58,7 @@ public class RulerMeasure {
 
     private void drawMeasureStart(Canvas canvas) {
         int color = ContextCompat.getColor(context, R.color.measure_start);
-        drawLine(canvas, rulerData.getScreenOffset(), PaintProvider.getColorPaint(5, color));
+        drawLine(canvas, screenOffset, PaintProvider.getColorPaint(5, color));
     }
 
     private void drawMeasureField(Canvas canvas, int measureX, int heightY, Ruler ruler) {
@@ -77,7 +77,7 @@ public class RulerMeasure {
 
     private int getFieldStartX(Ruler ruler) {
         if (ruler == Ruler.SCREEN) {
-            return rulerData.getScreenOffset();
+            return screenOffset;
         } else if (ruler == Ruler.RIGHT_PHONE_EDGE) {
             return bitmapWidth;
         } else {

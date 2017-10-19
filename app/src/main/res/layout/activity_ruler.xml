@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.darodev.smartruler.RulerActivity">
-
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/layout_ruler_app"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/layout_ruler_app_background"
-        android:orientation="vertical">
+        tools:context="com.darodev.smartruler.RulerActivity">
 
         <FrameLayout
             android:id="@+id/layout_header"
@@ -260,50 +255,3 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/layout_calibrate_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible">
-
-        <ImageView
-            android:id="@+id/image_calibrate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/color_semi_transparent"
-            android:contentDescription="@string/image_info"
-            app:srcCompat="@drawable/info_screen"/>
-
-        <TextView
-            android:id="@+id/text_info_calibrate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"/>
-
-        <Button
-            android:id="@+id/btn_done_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_margin="12dp"
-            android:onClick="clickDone"
-            android:text="@string/btn_done_text"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btn_done_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="12dp"
-            android:onClick="clickDone"
-            android:text="@string/btn_done_text"
-            android:textAllCaps="false"/>
-    </FrameLayout>
-
-</FrameLayout>
