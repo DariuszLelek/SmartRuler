@@ -11,6 +11,8 @@
     <string name="info_ruler_not_calibrated">Ruler is not calibrated. Go to options and calibrate.</string>
     <string name="info_ruler_not_calibrated_other">First set screen ruler.</string>
     <string name="unit_inch_mode_key">inchMode</string>
+    <string name="pixels_in_inch_key">pixelsInInch</string>
+    <string name="pixels_in_cm_key">pixelsInCm</string>
     <string name="ruler_screen_calibrated_key">rulerScreenCalibrated</string>
     <string name="pixels_to_left_edge_key">pixelsToLeft</string>
     <string name="pixels_to_right_edge_key">pixelsToRight</string>

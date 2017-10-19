@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
+import com.darodev.smartruler.CalibrateActivity;
 import com.darodev.smartruler.R;
 import com.darodev.smartruler.ruler.Ruler;
 import com.darodev.smartruler.ruler.RulerBitmapProvider;
@@ -107,14 +108,32 @@ public class RulerData {
 
     public void saveCalibrationResult(String calibrationResult, Ruler ruler){
         if(validResult(calibrationResult)){
-            int result = (int) Double.parseDouble(calibrationResult);
-
+            int cardWithPixels = (int) Double.parseDouble(calibrationResult);
+            if(ruler == Ruler.SCREEN){
+                cardWithPixels = cardWithPixels - CalibrateActivity.SCREEN_OFFSET_PIXELS;
+                saveScreenCalibrationData(cardWithPixels);
+            }
         }
     }
 
+    private void saveScreenCalibrationData(int cardWithPixels) {
+        int pixelsInCm = (int) (cardWithPixels / Constant.CREDIT_CARD_WIDTH_CM.getValue());
+        int pixelsInInch = (int) (cardWithPixels / Constant.CREDIT_CARD_WIDTH_INCH.getValue());
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(getKey(R.string.pixels_in_cm_key), pixelsInCm);
+        editor.putInt(getKey(R.string.pixels_in_inch_key), pixelsInInch);
+        editor.putBoolean(getKey(R.string.ruler_screen_calibrated_key), true);
+        editor.apply();
+    }
+
     public int getPixelsIn(Unit unit) {
-        // TODO get from prefs - if not set get metrics
-        return unit == Unit.CM ? Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue()) : Math.round(metrics.xdpi);
+        if(unit == Unit.CM){
+            int def = Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue());
+            return preferences.getInt(getKey(R.string.pixels_in_cm_key), def);
+        }else{
+            return preferences.getInt(getKey(R.string.pixels_in_inch_key), Math.round(metrics.xdpi));
+        }
     }
 
     private float getResultDivider(Unit unit, LineStepLevelHolder ls){

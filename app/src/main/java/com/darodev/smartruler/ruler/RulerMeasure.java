@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 
 import com.darodev.smartruler.R;
 import com.darodev.smartruler.utility.PaintProvider;
-import com.darodev.smartruler.utility.RulerData;
 
 import org.joda.time.DateTime;
 

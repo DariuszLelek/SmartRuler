@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.net.rtp.RtpStream;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -20,8 +18,6 @@ import com.darodev.smartruler.ruler.Ruler;
 import com.darodev.smartruler.ruler.RulerMeasure;
 
 import org.joda.time.DateTime;
-
-import static android.R.attr.data;
 
 public class CalibrateActivity extends AppCompatActivity {
     public static final int CALIBRATION_REQUEST_CODE = 1234;

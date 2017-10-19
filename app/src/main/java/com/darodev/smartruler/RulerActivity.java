@@ -289,7 +289,6 @@ public class RulerActivity extends AppCompatActivity {
         if (requestCode == CalibrateActivity.CALIBRATION_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 String calibrationResult = data.getStringExtra(resources.getString(R.string.calibration_result_key));
-
                 if(!calibrationResult.isEmpty()){
                     rulerData.saveCalibrationResult(calibrationResult, currentRuler);
                 }
