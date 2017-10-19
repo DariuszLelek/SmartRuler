@@ -9,8 +9,9 @@
     <string name="text_measure_result_empty">0.0</string>
     <string name="text_info"> </string>
     <string name="info_ruler_not_calibrated">Ruler is not calibrated. Go to options and calibrate.</string>
+    <string name="info_ruler_not_calibrated_other">First set screen ruler.</string>
     <string name="unit_inch_mode_key">inchMode</string>
-    <string name="ruler_calibrated_key">rulerCalibrated</string>
+    <string name="ruler_screen_calibrated_key">rulerScreenCalibrated</string>
     <string name="pixels_to_left_edge_key">pixelsToLeft</string>
     <string name="pixels_to_right_edge_key">pixelsToRight</string>
     <string name="current_ruler_type_key">currentRulerType</string>
@@ -20,6 +21,11 @@
     <string name="app_name_display">Smart Ruler</string>
     <string name="empty_text_placeholder">EMPTY</string>
     <string name="last_measure">last</string>
+    <string name="btn_done_text">done</string>
+    <string name="btn_cancel_text">cancel</string>
+    <string name="info_calibrate_screen">Place credit card on the phone screen.\nMake sure shorter card edge is inside the green rectangle.\nTap to begin.</string>
+    <string name="info_calibrate_left">Place credit card on the phone.\nAlign left card edge to the left phone edge.\nFor best result place the right phone edge against flat surface.\nTap to begin.</string>
+    <string name="info_calibrate_right">Place credit card on the phone.\nAlign right card edge to the right phone edge.\nFor best result place the right phone edge against flat surface.\nTap to begin.</string>
 
     <array name="save_slot_keys">
         <item>slot1</item>

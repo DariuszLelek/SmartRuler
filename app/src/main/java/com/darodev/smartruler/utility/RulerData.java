@@ -34,8 +34,8 @@ public class RulerData {
         this.metrics = metrics;
     }
 
-    public boolean isRulerCalibrated(){
-        return preferences.getBoolean(getKey(R.string.ruler_calibrated_key), false);
+    public boolean isScreenRulerCalibrated(){
+        return preferences.getBoolean(getKey(R.string.ruler_screen_calibrated_key), false);
     }
 
     public boolean isInInchMode() {
@@ -106,6 +106,7 @@ public class RulerData {
     }
 
     public int getPixelsIn(Unit unit) {
+        // TODO get from prefs - if not set get metrics
         return unit == Unit.CM ? Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue()) : Math.round(metrics.xdpi);
     }
 
