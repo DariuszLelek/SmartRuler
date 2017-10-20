@@ -68,8 +68,7 @@ public class PaintProvider {
 
             ColorWidth that = (ColorWidth) o;
 
-            if (color != that.color) return false;
-            return Float.compare(that.width, width) == 0;
+            return color == that.color && Float.compare(that.width, width) == 0;
 
         }
 

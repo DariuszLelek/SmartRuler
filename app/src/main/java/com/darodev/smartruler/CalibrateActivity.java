@@ -22,6 +22,8 @@ import org.joda.time.DateTime;
 public class CalibrateActivity extends AppCompatActivity {
     public static final int CALIBRATION_REQUEST_CODE = 1234;
     public static final int SCREEN_OFFSET_PIXELS = 0;
+    public static final int SCREEN_MEASURE_MIN = 250;
+    public static final int MEASURE_MIN = 50;
 
     private ImageView imageCalibrate;
     private RulerMeasure rulerMeasure;
@@ -30,6 +32,7 @@ public class CalibrateActivity extends AppCompatActivity {
     private Resources resources;
     private Ruler ruler;
     private LinearLayout layout_components;
+    private int bitmapWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,7 @@ public class CalibrateActivity extends AppCompatActivity {
                 imageCalibrate.buildDrawingCache();
                 Bitmap drawingCacheBitmap = imageCalibrate.getDrawingCache();
 
+                bitmapWidth = drawingCacheBitmap.getWidth();
                 rulerMeasure = new RulerMeasure(drawingCacheBitmap, getApplicationContext(), SCREEN_OFFSET_PIXELS);
             }
         });
@@ -113,13 +117,24 @@ public class CalibrateActivity extends AppCompatActivity {
     }
 
     public void clickCancel(View view){
-        //setResult(Activity.RESULT_OK, new Intent());
         finish();
+    }
+
+    private float adjustMeasureResult(){
+        float result = screenMeasurePointX;
+
+        if(ruler == Ruler.RIGHT_PHONE_EDGE){
+            result = bitmapWidth - screenMeasurePointX;
+        }else if (ruler == Ruler.SCREEN){
+            result = screenMeasurePointX < SCREEN_MEASURE_MIN ? SCREEN_MEASURE_MIN : screenMeasurePointX;
+        }
+
+        return result < MEASURE_MIN ? MEASURE_MIN : result;
     }
 
     private void finishActivity(){
         Intent data = new Intent();
-        data.putExtra(resources.getString(R.string.calibration_result_key), String.valueOf(screenMeasurePointX));
+        data.putExtra(resources.getString(R.string.calibration_result_key), String.valueOf(adjustMeasureResult()));
         setResult(Activity.RESULT_OK, data);
         finish();
     }

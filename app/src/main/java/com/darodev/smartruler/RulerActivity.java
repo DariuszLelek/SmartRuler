@@ -58,11 +58,9 @@ public class RulerActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
 
 
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(resources.getString(R.string.pixels_to_left_edge_key), 300);
-        editor.putInt(resources.getString(R.string.pixels_to_right_edge_key), 300);
+//        SharedPreferences.Editor editor = prefs.edit();
 //        editor.clear();
-        editor.apply();
+//        editor.apply();
 
         isCalibrateMode = false;
         imageRuler = (ImageView) findViewById(R.id.image_ruler);
@@ -82,7 +80,7 @@ public class RulerActivity extends AppCompatActivity {
         refreshImageRulerType();
         refreshImageUnitImage();
         refreshRulerShadow();
-        refreshTextInfo();
+        refreshTextCalibrateInfo();
         refreshSavedData();
 
         prepareImageRulerBitmap();
@@ -210,6 +208,7 @@ public class RulerActivity extends AppCompatActivity {
                 Bitmap drawingCacheBitmap = imageRuler.getDrawingCache();
 
                 prepareRulerBitmapProvider(drawingCacheBitmap);
+                refreshRulerBackgroundBitmap();
                 rulerMeasure = new RulerMeasure(drawingCacheBitmap, getApplicationContext(), rulerData.getScreenOffset());
             }
         });
@@ -217,19 +216,7 @@ public class RulerActivity extends AppCompatActivity {
 
     private void prepareRulerBitmapProvider(Bitmap imageRulerBitmap){
         rulerBitmapProvider = new RulerBitmapProvider(imageRulerBitmap, rulerData, resources);
-
-        for(Ruler ruler : Ruler.values()){
-            if(rulerData.isRulerSet(ruler)){
-                rulerBitmapProvider.prepareRulers(ruler);
-            }
-        }
-
-        refreshRulerBackgroundBitmap();
-    }
-
-    private void clearMeasure(){
-        resetMeasureResult();
-        imageRuler.setImageBitmap(null);
+        rulerBitmapProvider.prepareRulers();
     }
 
     private void refreshRulerBackgroundBitmap(){
@@ -239,9 +226,16 @@ public class RulerActivity extends AppCompatActivity {
         imageRuler.setBackground(rulerBitmapProvider.getRulerBitmap(unit, currentRuler));
     }
 
+
+    private void clearMeasure(){
+        resetMeasureResult();
+        imageRuler.setImageBitmap(null);
+    }
+
     public void clickRulerType(View view){
         currentRuler = Ruler.getNextRuler(currentRuler);
         rulerData.setCurrentRuler(currentRuler);
+        refreshTextCalibrateInfo();
         refreshRulerBackgroundBitmap();
         refreshImageRulerType();
         refreshRulerShadow();
@@ -251,9 +245,11 @@ public class RulerActivity extends AppCompatActivity {
         textMeasureResult.setText(resources.getString(R.string.text_measure_result_empty));
     }
 
-    private void refreshTextInfo(){
-        if(!rulerData.isScreenRulerCalibrated()){
+    private void refreshTextCalibrateInfo(){
+        if(!rulerData.isRulerCalibrated(currentRuler)){
             textInfo.setText(resources.getString(R.string.info_ruler_not_calibrated));
+        }else{
+            textInfo.setText("");
         }
     }
 
@@ -292,6 +288,7 @@ public class RulerActivity extends AppCompatActivity {
                 String calibrationResult = data.getStringExtra(resources.getString(R.string.calibration_result_key));
                 if(!calibrationResult.isEmpty()){
                     rulerData.saveCalibrationResult(calibrationResult, currentRuler);
+                    refreshTextCalibrateInfo();
                 }
             }
         }

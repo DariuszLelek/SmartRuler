@@ -85,16 +85,9 @@ public class RulerBitmapProvider {
         return rulerBitmapWidth;
     }
 
-    public void prepareRulers(Ruler ruler) {
-        if (ruler == Ruler.SCREEN) {
-            prepareRulerBitmap(RulerType.CM_SCREEN);
-            prepareRulerBitmap(RulerType.INCH_SCREEN);
-        } else if (ruler == Ruler.LEFT_PHONE_EDGE) {
-            prepareRulerBitmap(RulerType.CM_PHONE_EDGE_L);
-            prepareRulerBitmap(RulerType.INCH_PHONE_EDGE_L);
-        } else if (ruler == Ruler.RIGHT_PHONE_EDGE) {
-            prepareRulerBitmap(RulerType.CM_PHONE_EDGE_R);
-            prepareRulerBitmap(RulerType.INCH_PHONE_EDGE_R);
+    public void prepareRulers() {
+        for(RulerType rulerType : RulerType.values()){
+            prepareRulerBitmap(rulerType);
         }
     }
 

@@ -13,6 +13,8 @@ import com.darodev.smartruler.ruler.RulerType;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.darodev.smartruler.utility.Constant.CREDIT_CARD_WIDTH_CM;
+
 /**
  * Created by Dariusz Lelek on 10/15/2017.
  * dariusz.lelek@gmail.com
@@ -33,19 +35,18 @@ public class RulerData {
         this.metrics = metrics;
     }
 
-    public boolean isScreenRulerCalibrated(){
-        return preferences.getBoolean(getKey(R.string.ruler_screen_calibrated_key), false);
-    }
-
     public boolean isInInchMode() {
         return preferences.getBoolean(getKey(R.string.unit_inch_mode_key), false);
     }
 
-    public boolean isRulerSet(Ruler ruler) {
+    public boolean isRulerCalibrated(Ruler ruler) {
         if (ruler == Ruler.LEFT_PHONE_EDGE) {
-            return preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 0) > 0;
-        } else
-            return ruler != Ruler.RIGHT_PHONE_EDGE || preferences.getInt(getKey(R.string.pixels_to_right_edge_key), 0) > 0;
+            return preferences.getFloat(getKey(R.string.pixels_to_left_edge_key), 0) > 0;
+        } else if(ruler == Ruler.RIGHT_PHONE_EDGE){
+            return preferences.getFloat(getKey(R.string.pixels_to_right_edge_key), 0) > 0;
+        }else{
+            return preferences.getBoolean(getKey(R.string.ruler_screen_calibrated_key), false);
+        }
     }
 
     public void swapInchMode() {
@@ -68,7 +69,7 @@ public class RulerData {
         String[] savedData = new String[saveSlotKeys.length];
 
         for (int i = 0; i < saveSlotKeys.length; i++) {
-            savedData[i] = preferences.getString(saveSlotKeys[i], "EMPTY");
+            savedData[i] = preferences.getString(saveSlotKeys[i], "-");
         }
 
         return savedData;
@@ -79,9 +80,9 @@ public class RulerData {
         if (startPoint == Ruler.SCREEN) {
             return getScreenOffset();
         } else if (startPoint == Ruler.LEFT_PHONE_EDGE) {
-            return -preferences.getInt(getKey(R.string.pixels_to_left_edge_key), 300);
+            return -preferences.getFloat(getKey(R.string.pixels_to_left_edge_key), 0);
         } else if (startPoint == Ruler.RIGHT_PHONE_EDGE) {
-            return preferences.getInt(getKey(R.string.pixels_to_right_edge_key), 300);
+            return preferences.getFloat(getKey(R.string.pixels_to_right_edge_key), 0);
         } else {
             return 0;
         }
@@ -103,17 +104,21 @@ public class RulerData {
 
     public void saveCalibrationResult(String calibrationResult, Ruler ruler){
         if(validResult(calibrationResult)){
-            int cardWithPixels = (int) Double.parseDouble(calibrationResult);
+            float result = Float.parseFloat(calibrationResult);
             if(ruler == Ruler.SCREEN){
-                cardWithPixels = cardWithPixels - CalibrateActivity.SCREEN_OFFSET_PIXELS;
-                saveScreenCalibrationData(cardWithPixels);
+                saveScreenCalibration(result);
+            }else if (ruler == Ruler.LEFT_PHONE_EDGE){
+                saveCalibration(result, getKey(R.string.pixels_to_left_edge_key));
+            }else if (ruler == Ruler.RIGHT_PHONE_EDGE){
+                saveCalibration(result, getKey(R.string.pixels_to_right_edge_key));
             }
         }
     }
 
-    private void saveScreenCalibrationData(int cardWithPixels) {
-        float pixelsInCm = cardWithPixels / Constant.CREDIT_CARD_WIDTH_CM.getValue();
-        float pixelsInInch = cardWithPixels / Constant.CREDIT_CARD_WIDTH_INCH.getValue();
+    private void saveScreenCalibration(float cardWidthPixels) {
+        cardWidthPixels = cardWidthPixels - CalibrateActivity.SCREEN_OFFSET_PIXELS;
+        float pixelsInCm = cardWidthPixels / CREDIT_CARD_WIDTH_CM.getValue();
+        float pixelsInInch = cardWidthPixels / Constant.CREDIT_CARD_WIDTH_INCH.getValue();
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putFloat(getKey(R.string.pixels_in_cm_key), pixelsInCm);
@@ -122,11 +127,21 @@ public class RulerData {
         editor.apply();
     }
 
+    private void saveCalibration(float pixelsFromEdge, String key){
+        float pixelsInCm = getPixelsIn(Unit.CM);
+        float phoneEdgeCm = Constant.CREDIT_CARD_WIDTH_CM.getValue() - pixelsFromEdge / pixelsInCm;
+        float phoneEdgePixels = phoneEdgeCm * pixelsInCm;
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putFloat(key, phoneEdgePixels);
+        editor.apply();
+    }
+
     public float getMinSectionWidth(Unit unit){
         return getPixelsIn(unit) / unit.getSections();
     }
 
-    public float getPixelsIn(Unit unit) {
+    private float getPixelsIn(Unit unit) {
         if(unit == Unit.CM){
             int def = Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue());
             return preferences.getFloat(getKey(R.string.pixels_in_cm_key), def);
@@ -149,7 +164,7 @@ public class RulerData {
     }
 
     public Ruler getCurrentRuler(){
-        return Ruler.getByString(preferences.getString(getKey(R.string.current_ruler_key), "SCREEN"));
+        return Ruler.getByString(preferences.getString(getKey(R.string.current_ruler_key), Ruler.SCREEN.name()));
     }
 
     private Unit getUnit() {
@@ -169,7 +184,7 @@ public class RulerData {
 
     private boolean validResult(String result) {
         try {
-            Double value = Double.parseDouble(result);
+            Float value = Float.parseFloat(result);
             return value > 0;
         } catch (NumberFormatException ex) {
             return false;
