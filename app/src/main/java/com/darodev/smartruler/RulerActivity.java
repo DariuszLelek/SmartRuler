@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,7 +51,7 @@ public class RulerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruler);
 
-        //adView = getAdView();
+        adView = getAdView();
 
         resources = getResources();
         SharedPreferences prefs = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE);
@@ -60,10 +59,6 @@ public class RulerActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
 
         PaintProvider.setTextFontSize(getResources().getDimensionPixelSize(R.dimen.ruler_font_size));
-
-//        SharedPreferences.Editor editor = prefs.edit();
-//        editor.clear();
-//        editor.apply();
 
         isCalibrateMode = false;
         imageRuler = (ImageView) findViewById(R.id.image_ruler);
@@ -89,7 +84,7 @@ public class RulerActivity extends AppCompatActivity {
         prepareImageRulerBitmap();
         prepareImageRulerListener();
 
-        //prepareAds();
+        prepareAds();
     }
 
     private void prepareAds(){

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
 import com.darodev.smartruler.R;
