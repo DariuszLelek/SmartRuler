@@ -14,7 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PaintProvider {
     private static final Map<Float, Paint> blackPaints = new ConcurrentHashMap<>();
     private static final Map<ColorWidth, Paint> colorPaints = new ConcurrentHashMap<>();
-    private static final Paint textPaint = getNewTextPaint();
+
+    private static Paint textPaint;
+    private static int textFontSize = 1;
 
     public static Paint getBlackPaint(float strokeWidth){
         if(!blackPaints.containsKey(strokeWidth)){
@@ -31,14 +33,21 @@ public class PaintProvider {
         return colorPaints.get(key);
     }
 
+    public static void setTextFontSize(int textFontSize) {
+        PaintProvider.textFontSize = textFontSize;
+    }
+
     public static Paint getTextPaint(){
+        if(textPaint == null){
+            textPaint = getNewTextPaint();
+        }
         return textPaint;
     }
 
     private static Paint getNewTextPaint(){
         Paint paint = new Paint();
         paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setTextSize(50);
+        paint.setTextSize(textFontSize);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setColor(Color.BLACK);
         return paint;

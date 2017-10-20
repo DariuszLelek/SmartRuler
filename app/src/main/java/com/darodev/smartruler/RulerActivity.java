@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +22,7 @@ import com.darodev.smartruler.ruler.MeasureOrigin;
 import com.darodev.smartruler.ruler.Ruler;
 import com.darodev.smartruler.ruler.RulerBitmapProvider;
 import com.darodev.smartruler.ruler.RulerMeasure;
+import com.darodev.smartruler.utility.PaintProvider;
 import com.darodev.smartruler.utility.RulerData;
 import com.darodev.smartruler.utility.Unit;
 import com.google.android.gms.ads.AdRequest;
@@ -57,6 +59,7 @@ public class RulerActivity extends AppCompatActivity {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
 
+        PaintProvider.setTextFontSize(getResources().getDimensionPixelSize(R.dimen.ruler_font_size));
 
 //        SharedPreferences.Editor editor = prefs.edit();
 //        editor.clear();

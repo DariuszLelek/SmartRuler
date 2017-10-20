@@ -69,7 +69,7 @@ public class RulerData {
         String[] savedData = new String[saveSlotKeys.length];
 
         for (int i = 0; i < saveSlotKeys.length; i++) {
-            savedData[i] = preferences.getString(saveSlotKeys[i], "-");
+            savedData[i] = preferences.getString(saveSlotKeys[i], "");
         }
 
         return savedData;

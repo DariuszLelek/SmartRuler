@@ -27,9 +27,10 @@
     <string name="ruler_key">rulerKey</string>
     <string name="btn_done_text">Done</string>
     <string name="btn_cancel_text">Cancel</string>
-    <string name="info_calibrate_screen">Place credit card on the phone screen.\nMake sure shorter that card edge\nis inside the green rectangle.\n\nTap to begin.</string>
-    <string name="info_calibrate_left">Place credit card on the phone.\nAlign left card edge to the left phone edge.\n\nTip for best result:\nPlace phone edge against flat surface.\n\nTap to begin.</string>
-    <string name="info_calibrate_right">Place credit card on the phone.\nAlign right card edge to the right phone edge.\n\nTip for best result:\nPlace phone edge against flat surface.\n\nTap to begin.</string>
+    <string name="info_calibrate_screen">Place card on phone screen as shown on picture.\nAdjust the green rectangle so the card is exactly inside of it.\nTap to begin.</string>
+    <string name="info_calibrate_left">Place card on the phone.\nAlign left card edge to the left phone edge.\nFor best result place your phone edge against a flat surface.\nTap to begin.</string>
+    <string name="info_calibrate_right">Place card on the phone.\nAlign right card edge to the right phone edge.\nFor best result place your phone edge against a flat surface.\nTap to begin.</string>
+    <string name="calibration_text">Calibration</string>
 
     <array name="save_slot_keys">
         <item>slot1</item>

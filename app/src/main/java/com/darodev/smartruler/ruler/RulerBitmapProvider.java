@@ -22,7 +22,7 @@ import java.util.TreeMap;
 
 public class RulerBitmapProvider {
     private static final int numberOfDiffHeightLines = 5;
-    private static final float textPositionHeightDivider = 1.25F;
+    private static final float textPositionHeightDivider = 1.5F;
     private static final Map<Unit, TreeMap<Integer, Integer>> levelSectionsByUnit = new HashMap<>();
 
     private final Resources res;
