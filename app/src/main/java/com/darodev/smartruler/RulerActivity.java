@@ -61,6 +61,7 @@ public class RulerActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(resources.getString(R.string.pixels_to_left_edge_key), 300);
         editor.putInt(resources.getString(R.string.pixels_to_right_edge_key), 300);
+//        editor.clear();
         editor.apply();
 
         isCalibrateMode = false;
@@ -176,7 +177,7 @@ public class RulerActivity extends AppCompatActivity {
                             rulerMeasure.setLastMeasureTime();
                             int pointX = Math.round(event.getX());
                             setMeasureBitmap(imageRuler, MeasureOrigin.RULER_SCREEN, pointX);
-                            setMeasureResult(pointX);
+                            setMeasureResult(event.getX());
                         }
                         return true;
                     }
@@ -191,7 +192,7 @@ public class RulerActivity extends AppCompatActivity {
         imageView.setImageBitmap(bitmap);
     }
 
-    private void setMeasureResult(int pointX){
+    private void setMeasureResult(float pointX){
         float result = rulerData.getMeasureResult(pointX, currentRuler, rulerBitmapProvider);
         textMeasureResult.setText(getFormattedResult(result));
     }

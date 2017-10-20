@@ -6,13 +6,19 @@ package com.darodev.smartruler.utility;
  */
 
 public enum Unit {
-    INCH("inch"),
-    CM("cm");
+    INCH("inch", 8),
+    CM("cm", 10);
 
     private String value;
+    private int sections;
 
-    Unit(String value) {
+    Unit(String value, int sections) {
         this.value = value;
+        this.sections = sections;
+    }
+
+    public int getSections() {
+        return sections;
     }
 
     @Override

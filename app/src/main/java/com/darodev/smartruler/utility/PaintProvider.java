@@ -12,18 +12,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class PaintProvider {
-    private static final Map<Integer, Paint> blackPaints = new ConcurrentHashMap<>();
+    private static final Map<Float, Paint> blackPaints = new ConcurrentHashMap<>();
     private static final Map<ColorWidth, Paint> colorPaints = new ConcurrentHashMap<>();
     private static final Paint textPaint = getNewTextPaint();
 
-    public static Paint getBlackPaint(int strokeWidth){
+    public static Paint getBlackPaint(float strokeWidth){
         if(!blackPaints.containsKey(strokeWidth)){
             blackPaints.put(strokeWidth, getNewPaint(strokeWidth, Color.BLACK));
         }
         return blackPaints.get(strokeWidth);
     }
 
-    public static Paint getColorPaint(int strokeWidth, int color){
+    public static Paint getColorPaint(float strokeWidth, int color){
         ColorWidth key = new ColorWidth(color, strokeWidth);
         if(!colorPaints.containsKey(key)){
             colorPaints.put(key, getNewPaint(strokeWidth, color));
@@ -44,7 +44,7 @@ public class PaintProvider {
         return paint;
     }
 
-    private static Paint getNewPaint(int strokeWidth, int color){
+    private static Paint getNewPaint(float strokeWidth, int color){
         Paint paint = new Paint();
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeWidth(strokeWidth);
@@ -53,10 +53,10 @@ public class PaintProvider {
     }
 
     private static class ColorWidth{
-        private int color;
-        private int width;
+        private final int color;
+        private final float width;
 
-        ColorWidth(int color, int width) {
+        ColorWidth(int color, float width) {
             this.color = color;
             this.width = width;
         }
@@ -68,14 +68,15 @@ public class PaintProvider {
 
             ColorWidth that = (ColorWidth) o;
 
-            return color == that.color && width == that.width;
+            if (color != that.color) return false;
+            return Float.compare(that.width, width) == 0;
 
         }
 
         @Override
         public int hashCode() {
             int result = color;
-            result = 31 * result + width;
+            result = 31 * result + (width != +0.0f ? Float.floatToIntBits(width) : 0);
             return result;
         }
     }

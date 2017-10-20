@@ -12,8 +12,8 @@
     <color name="layout_content_result_background">#687a66</color>
 
     <color name="measure_field">#501cff03</color>
-    <color name="measure_start">#1cff03</color>
-    <color name="measure_end">#c81cff03</color>
+    <color name="measure_start">#a01cff03</color>
+    <color name="measure_end">#a01cff03</color>
 
     <color name="save_1">#000000</color>
     <color name="save_2">#1e1e1e</color>

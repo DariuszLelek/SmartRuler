@@ -9,7 +9,6 @@ import com.darodev.smartruler.R;
 import com.darodev.smartruler.ruler.Ruler;
 import com.darodev.smartruler.ruler.RulerBitmapProvider;
 import com.darodev.smartruler.ruler.RulerType;
-import com.darodev.smartruler.ruler.line.LineStepLevelHolder;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,9 +24,8 @@ public class RulerData {
     private final DisplayMetrics metrics;
 
     private final Map<Integer, String> cachedKeys = new ConcurrentHashMap<>();
-    private final Map<Unit, Integer> resultDividerCache = new ConcurrentHashMap<>();
 
-    private int screenOffset = 0;
+    private float screenOffset = 0;
 
     public RulerData(Resources resources, SharedPreferences preferences, DisplayMetrics metrics) {
         this.resources = resources;
@@ -76,7 +74,7 @@ public class RulerData {
         return savedData;
     }
 
-    public int getRulerStartPoint(RulerType type) {
+    public float getRulerStartPoint(RulerType type) {
         Ruler startPoint = type.getRuler();
         if (startPoint == Ruler.SCREEN) {
             return getScreenOffset();
@@ -89,19 +87,16 @@ public class RulerData {
         }
     }
 
-    public float getMeasureResult(int pointX, Ruler ruler, RulerBitmapProvider ruleBitmapProvider){
+    public float getMeasureResult(float pointX, Ruler ruler, RulerBitmapProvider ruleBitmapProvider){
         final Unit unit = getUnit();
-        final float resultDivider = getResultDivider(unit, ruleBitmapProvider.getLineStepLevelHolder(unit));
-        int startPoint = getRulerStartPoint(RulerType.getType(unit, ruler));
+        float startPoint = getRulerStartPoint(RulerType.getType(unit, ruler));
 
-        if(ruler == Ruler.SCREEN){
-            return (pointX - startPoint) / resultDivider;
-        }else if (ruler == Ruler.LEFT_PHONE_EDGE){
-            return (pointX - startPoint) / resultDivider;
-        }else if (ruler == Ruler.RIGHT_PHONE_EDGE){
+        if (ruler == Ruler.SCREEN || ruler == Ruler.LEFT_PHONE_EDGE) {
+            return (pointX - startPoint) / getPixelsIn(unit);
+        } else if (ruler == Ruler.RIGHT_PHONE_EDGE) {
             int width = ruleBitmapProvider.getRulerBitmapWidth();
-            return ((width - pointX) + startPoint) / resultDivider;
-        }else{
+            return ((width - pointX) + startPoint) / getPixelsIn(unit);
+        } else {
             return 0;
         }
     }
@@ -117,33 +112,30 @@ public class RulerData {
     }
 
     private void saveScreenCalibrationData(int cardWithPixels) {
-        int pixelsInCm = (int) (cardWithPixels / Constant.CREDIT_CARD_WIDTH_CM.getValue());
-        int pixelsInInch = (int) (cardWithPixels / Constant.CREDIT_CARD_WIDTH_INCH.getValue());
+        float pixelsInCm = cardWithPixels / Constant.CREDIT_CARD_WIDTH_CM.getValue();
+        float pixelsInInch = cardWithPixels / Constant.CREDIT_CARD_WIDTH_INCH.getValue();
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(getKey(R.string.pixels_in_cm_key), pixelsInCm);
-        editor.putInt(getKey(R.string.pixels_in_inch_key), pixelsInInch);
+        editor.putFloat(getKey(R.string.pixels_in_cm_key), pixelsInCm);
+        editor.putFloat(getKey(R.string.pixels_in_inch_key), pixelsInInch);
         editor.putBoolean(getKey(R.string.ruler_screen_calibrated_key), true);
         editor.apply();
     }
 
-    public int getPixelsIn(Unit unit) {
+    public float getMinSectionWidth(Unit unit){
+        return getPixelsIn(unit) / unit.getSections();
+    }
+
+    public float getPixelsIn(Unit unit) {
         if(unit == Unit.CM){
             int def = Math.round(metrics.xdpi / Constant.CM_IN_INCH.getValue());
-            return preferences.getInt(getKey(R.string.pixels_in_cm_key), def);
+            return preferences.getFloat(getKey(R.string.pixels_in_cm_key), def);
         }else{
-            return preferences.getInt(getKey(R.string.pixels_in_inch_key), Math.round(metrics.xdpi));
+            return preferences.getFloat(getKey(R.string.pixels_in_inch_key), Math.round(metrics.xdpi));
         }
     }
 
-    private float getResultDivider(Unit unit, LineStepLevelHolder ls){
-        if(!resultDividerCache.containsKey(unit)){
-            resultDividerCache.put(unit, ls.getSmallestStep() * ls.getSmallestStepMultiplier());
-        }
-        return resultDividerCache.get(unit);
-    }
-
-    public int getScreenOffset() {
+    public float getScreenOffset() {
         if(screenOffset == 0){
             screenOffset = getPixelsIn(Unit.CM) / 2;
         }

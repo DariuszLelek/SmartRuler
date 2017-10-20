@@ -21,7 +21,7 @@ import org.joda.time.DateTime;
 
 public class CalibrateActivity extends AppCompatActivity {
     public static final int CALIBRATION_REQUEST_CODE = 1234;
-    public static final int SCREEN_OFFSET_PIXELS = 100;
+    public static final int SCREEN_OFFSET_PIXELS = 0;
 
     private ImageView imageCalibrate;
     private RulerMeasure rulerMeasure;

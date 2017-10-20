@@ -6,5 +6,16 @@ package com.darodev.smartruler.ruler;
  */
 
 public enum MeasureOrigin {
-    RULER_SCREEN, CALIBRATION_SCREEN
+    RULER_SCREEN(4),
+    CALIBRATION_SCREEN(1);
+
+    private final int divider;
+
+    MeasureOrigin(int divider) {
+        this.divider = divider;
+    }
+
+    public int getDivider() {
+        return divider;
+    }
 }

@@ -6,8 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 
-import com.darodev.smartruler.ruler.line.LineStepLevel;
-import com.darodev.smartruler.ruler.line.LineStepLevelHolder;
+import com.darodev.smartruler.utility.Constant;
 import com.darodev.smartruler.utility.PaintProvider;
 import com.darodev.smartruler.utility.RulerData;
 import com.darodev.smartruler.utility.Unit;
@@ -16,8 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static com.darodev.smartruler.utility.Unit.CM;
-
 /**
  * Created by Dariusz Lelek on 10/16/2017.
  * dariusz.lelek@gmail.com
@@ -25,16 +22,15 @@ import static com.darodev.smartruler.utility.Unit.CM;
 
 public class RulerBitmapProvider {
     private static final int numberOfDiffHeightLines = 5;
-    private static final int textPositionHeightDivider = 3;
-    private static final int unitFullWidth = 3;
-    private static final int unitFractionWidth = 2;
+    private static final float textPositionHeightDivider = 1.25F;
+    private static final Map<Unit, TreeMap<Integer, Integer>> levelSectionsByUnit = new HashMap<>();
 
     private final Resources res;
     private final TreeMap<Integer, Integer> lineHeightByLevel = new TreeMap<>();
     private final Map<RulerType, BitmapDrawable> bitmapByRulerType = new HashMap<>();
-    private final Map<Unit, LineStepLevelHolder> lineStepLevelHolderByUnit = new HashMap<>();
     private final int rulerBitmapWidth;
 
+    private int digitsCounter = 0;
     private final RulerData rulerData;
 
     public RulerBitmapProvider(Bitmap imageRulerBitmap, RulerData rulerData, Resources res) {
@@ -42,8 +38,41 @@ public class RulerBitmapProvider {
         this.res = res;
         this.rulerBitmapWidth = imageRulerBitmap.getWidth();
 
+        prepareLevelSectionsByUnit();
         prepareLinesHeight(imageRulerBitmap.getHeight());
         populateMapWithDefaultBitmaps(imageRulerBitmap);
+    }
+
+    private void prepareLevelSectionsByUnit(){
+        levelSectionsByUnit.put(Unit.CM, getLevelSectionsForCm());
+        levelSectionsByUnit.put(Unit.INCH, getLevelSectionsForInch());
+    }
+
+    private TreeMap<Integer, Integer> getLevelSectionsForCm(){
+        TreeMap<Integer, Integer> levelSections = new TreeMap<>();
+        levelSections.put(0, 10);
+        levelSections.put(1, 5);
+        levelSections.put(2, 1);
+        return levelSections;
+    }
+
+    private TreeMap<Integer, Integer> getLevelSectionsForInch(){
+        TreeMap<Integer, Integer> levelSections = new TreeMap<>();
+        levelSections.put(0, 8);
+        levelSections.put(1, 4);
+        levelSections.put(2, 2);
+        levelSections.put(3, 1);
+        return levelSections;
+    }
+
+    private void prepareLinesHeight(int bitmapHeight) {
+        int level = 0;
+        int height = bitmapHeight / 2;
+        while (level <= numberOfDiffHeightLines) {
+            lineHeightByLevel.put(level, height);
+            height /= 2;
+            level++;
+        }
     }
 
     private void populateMapWithDefaultBitmaps(Bitmap defaultBitmap) {
@@ -59,9 +88,7 @@ public class RulerBitmapProvider {
     public void prepareRulers(Ruler ruler) {
         if (ruler == Ruler.SCREEN) {
             prepareRulerBitmap(RulerType.CM_SCREEN);
-            //prepareRulerBitmap(RulerType.CM_SCREEN_R);
             prepareRulerBitmap(RulerType.INCH_SCREEN);
-            //prepareRulerBitmap(RulerType.INCH_SCREEN_R);
         } else if (ruler == Ruler.LEFT_PHONE_EDGE) {
             prepareRulerBitmap(RulerType.CM_PHONE_EDGE_L);
             prepareRulerBitmap(RulerType.INCH_PHONE_EDGE_L);
@@ -71,107 +98,30 @@ public class RulerBitmapProvider {
         }
     }
 
-    public BitmapDrawable getRulerBitmap(Unit unit, Ruler ruler) {
-        return bitmapByRulerType.get(RulerType.getType(unit, ruler));
-    }
-
-    private void prepareLinesHeight(int bitmapHeight) {
-        int level = 0;
-        int height = bitmapHeight / 2;
-        while (level <= numberOfDiffHeightLines) {
-            lineHeightByLevel.put(level, height);
-            height /= 2;
-            level++;
-        }
-    }
-
     private void prepareRulerBitmap(RulerType type) {
-        Unit unit = type.getUnit();
-        int startPoint = rulerData.getRulerStartPoint(type);
-        Canvas canvas = new Canvas(bitmapByRulerType.get(type).getBitmap());
-        LineStepLevelHolder lineStepLevelHolder = getLineStepLevelHolder(unit);
+        final Unit unit = type.getUnit();
+        final boolean isFromLeft = type.isFromLeft();
+        final float startPoint = rulerData.getRulerStartPoint(type);
+        final Canvas canvas = new Canvas(bitmapByRulerType.get(type).getBitmap());
+        digitsCounter = 0;
 
-        if (type.isFromLeft()) {
-            drawRulerFromLeft(canvas, startPoint, lineStepLevelHolder);
-        } else {
-            drawRulerLinesFromRight(canvas, startPoint, lineStepLevelHolder);
-        }
-    }
-
-    public LineStepLevelHolder getLineStepLevelHolder(Unit unit) {
-        if(!lineStepLevelHolderByUnit.containsKey(unit)){
-            int pixelsInUnit = rulerData.getPixelsIn(unit);
-
-            if (unit == CM) {
-                int smallestStepMultiplier = 10;
-                int smallestStep = pixelsInUnit / smallestStepMultiplier;
-                lineStepLevelHolderByUnit.put(unit, new LineStepLevelHolder(new LineStepLevel[]{
-                        new LineStepLevel(smallestStep, 1, 2),
-                        new LineStepLevel(smallestStep, 5, 1),
-                        new LineStepLevel(smallestStep, 10, 0)
-                }, smallestStepMultiplier));
-            } else {
-                int smallestStepMultiplier = 8;
-                int smallestStep = pixelsInUnit / smallestStepMultiplier;
-                lineStepLevelHolderByUnit.put(unit, new LineStepLevelHolder(new LineStepLevel[]{
-                        new LineStepLevel(smallestStep, 1, 3),
-                        new LineStepLevel(smallestStep, 2, 2),
-                        new LineStepLevel(smallestStep, 4, 1),
-                        new LineStepLevel(smallestStep, 8, 0)
-                }, smallestStepMultiplier));
-            }
-        }
-
-        return lineStepLevelHolderByUnit.get(unit);
-    }
-
-    private void drawRulerLinesFromRight(Canvas canvas, int startPoint, LineStepLevelHolder lineStepLevelHolder) {
-        int canvasWidth = canvas.getWidth();
-        int counter = 0;
-
-        for (int x = canvasWidth + startPoint; x >= 0; x--) {
-            int level = lineStepLevelHolder.getLevelByStep(Math.abs(x - startPoint - canvasWidth));
+        for(Map.Entry<Integer, Integer> entry : levelSectionsByUnit.get(unit).entrySet()){
+            int level = entry.getKey();
             int lineHeight = getLineHeightByLevel(level);
+            float sectionWidth = rulerData.getMinSectionWidth(unit) * entry.getValue();
 
-            if (lineHeight > 0 && x <= canvasWidth) {
-                drawRulerFragment(canvas, level, counter, lineHeight, x);
-            }
-
-            if (level == 0) {
-                counter++;
-            }
-        }
-    }
-
-    // TODO refactor
-    private void drawRulerFromLeft(Canvas canvas, int startPoint, LineStepLevelHolder lineStepLevelHolder) {
-        int canvasWidth = canvas.getWidth();
-        int counter = 0;
-
-        for (int x = startPoint; x <= canvasWidth; x++) {
-            int level = lineStepLevelHolder.getLevelByStep(x - startPoint);
-            int lineHeight = getLineHeightByLevel(level);
-
-            if (lineHeight > 0 && x >= 0) {
-                drawRulerFragment(canvas, level, counter, lineHeight, x);
-            }
-
-            if (level == 0) {
-                counter++;
+            if(isFromLeft){
+                for (float x = startPoint; sectionWidth > 0 && x <= canvas.getWidth(); x += sectionWidth){
+                    drawRulerSection(canvas, level, lineHeight, x);
+                    drawRulerDigits(canvas, level, x);
+                }
+            }else{
+                for (float x = canvas.getWidth() + startPoint; sectionWidth > 0 && x >= 0; x -= sectionWidth) {
+                    drawRulerSection(canvas, level, lineHeight, x);
+                    drawRulerDigits(canvas, level, x);
+                }
             }
         }
-    }
-
-    private void drawRulerFragment(Canvas canvas, int level, int counter, int lineHeight, int x) {
-        canvas.drawLine(x, 0, x, lineHeight, getPaintByLevel(level));
-        if (level == 0 && counter > 0) {
-            int textY = lineHeight + lineHeight / textPositionHeightDivider;
-            canvas.drawText(String.valueOf(counter), x, textY, PaintProvider.getTextPaint());
-        }
-    }
-
-    private Paint getPaintByLevel(int level) {
-        return level == 0 ? PaintProvider.getBlackPaint(unitFullWidth) : PaintProvider.getBlackPaint(unitFractionWidth);
     }
 
     private int getLineHeightByLevel(int level) {
@@ -179,5 +129,31 @@ public class RulerBitmapProvider {
             return lineHeightByLevel.get(level);
         }
         return -1;
+    }
+
+    private void drawRulerSection(Canvas canvas, int level, int lineHeight, float x) {
+        if(x >=0 && x <= canvas.getWidth() && lineHeight > 0){
+            canvas.drawLine(x, 0, x, lineHeight, getPaintByLevel(level));
+        }
+    }
+
+    private Paint getPaintByLevel(int level) {
+        if(level == 0){
+            return PaintProvider.getBlackPaint(Constant.RULER_MAIN_LINE_WIDTH.getValue());
+        }else{
+            return PaintProvider.getBlackPaint(Constant.RULER_LINE_WIDTH.getValue());
+        }
+    }
+
+    private void drawRulerDigits(Canvas canvas, int level, float x) {
+        if(level == 0){
+            float textY = canvas.getHeight() / textPositionHeightDivider;
+            canvas.drawText(String.valueOf(digitsCounter), x, textY, PaintProvider.getTextPaint());
+            digitsCounter++;
+        }
+    }
+
+    public BitmapDrawable getRulerBitmap(Unit unit, Ruler ruler) {
+        return bitmapByRulerType.get(RulerType.getType(unit, ruler));
     }
 }
