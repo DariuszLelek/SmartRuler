@@ -57,7 +57,7 @@ public class RulerMeasure {
 
     private void drawMeasureStart(Canvas canvas, Ruler ruler) {
         if (ruler == Ruler.SCREEN) {
-            int color = ContextCompat.getColor(context, R.color.measure_start);
+            int color = ContextCompat.getColor(context, R.color.measure_line);
             Paint paint = PaintProvider.getColorPaint(Constant.MEASURE_LINE_WIDTH.getValue(), color);
 
             drawLine(canvas, screenOffset, paint);
@@ -72,7 +72,7 @@ public class RulerMeasure {
     }
 
     private void drawMeasureEnd(Canvas canvas, int measureX) {
-        int color = ContextCompat.getColor(context, R.color.measure_end);
+        int color = ContextCompat.getColor(context, R.color.measure_line);
         Paint paint = PaintProvider.getColorPaint(Constant.MEASURE_LINE_WIDTH.getValue(), color);
 
         drawLine(canvas, measureX, paint);

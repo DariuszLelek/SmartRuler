@@ -3,17 +3,19 @@
     <!--<color name="colorPrimary">#3F51B5</color>-->
     <color name="color_transparent">#00ffffff</color>
     <color name="color_semi_transparent">#e1ffffff</color>
+    <color name="color_error">#d9534f</color>
+    <color name="color_ruler">#cbe86b</color>
 
     <color name="layout_ruler_app_background">#00ffffff</color>
-    <color name="layout_content_background">#a3a3a3</color>
-    <color name="layout_save_background">#d9d9d9</color>
+    <color name="layout_content_background">#1C140D</color>
+    <color name="layout_save_background">#F2E9E1</color>
+    <color name="layout_footer_background">#FFFFFF</color>
     <color name="layout_content_text_background">#ffffff</color>
     <color name="layout_image_ruler_background">#ffffff</color>
-    <color name="layout_content_result_background">#687a66</color>
+    <color name="layout_content_result_background">#CBE86B</color>
 
-    <color name="measure_field">#501cff03</color>
-    <color name="measure_start">#a01cff03</color>
-    <color name="measure_end">#a01cff03</color>
+    <color name="measure_field">#9fcbe86b</color>
+    <color name="measure_line">#cfcbe86b</color>
 
     <color name="save_1">#000000</color>
     <color name="save_2">#1e1e1e</color>
